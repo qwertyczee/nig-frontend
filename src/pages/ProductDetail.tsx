@@ -26,11 +26,15 @@ import React, { useState, useEffect } from 'react';
           try {
             const data = await fetchProductById(id);
             setProduct(data);
-          } catch (err: any) {
-            if (err.message === 'Product not found') {
-              setError('Produkt nenalezen.');
+          } catch (err: unknown) {
+            if (err instanceof Error) {
+              if (err.message === 'Product not found') {
+                setError('Produkt nenalezen.');
+              } else {
+                setError(err.message);
+              }
             } else {
-              setError(err.message || 'Nepodařilo se načíst detail produktu.');
+              setError('Nepodařilo se načíst detail produktu. Neznámá chyba.');
             }
             console.error(err);
           } finally {
@@ -101,7 +105,7 @@ import React, { useState, useEffect } from 'react';
             <div className="md:flex">
               <div className="md:w-1/2">
                 <img 
-                  src={product.image_url || 'https://via.placeholder.com/600x400.png?text=Obrázek+není+k+dispozici'} 
+                  src={product.image_url || 'https://placehold.co/600x400.png?text=Obrázek+není+k+dispozici'} 
                   alt={product.name} 
                   className="w-full h-full object-cover aspect-[4/3] md:aspect-auto"
                 />

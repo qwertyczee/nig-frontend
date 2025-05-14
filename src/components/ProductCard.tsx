@@ -25,10 +25,10 @@ import React from 'react';
         >
           <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
             <img 
-              src={product.image_url || 'https://via.placeholder.com/400x300.png?text=Obrázek+není+k+dispozici'} 
+              src={product.image_url || 'https://placehold.co/400x300.png?text=Obrázek+není+k+dispozici'} 
               alt={product.name} 
               className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-              onError={(e) => (e.currentTarget.src = 'https://via.placeholder.com/400x300.png?text=Chyba+obrázku')}
+              onError={(e) => (e.currentTarget.src = 'https://placehold.co/400x300.png?text=Chyba+obrázku')}
             />
           </div>
           
