@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
-import products from '../data/products';
-import { ArrowRight, CheckCircle, Clock, Award } from 'lucide-react';
+import { fetchProducts } from '../services/api';
+import { Product } from '../types';
+import { ArrowRight, CheckCircle, Clock, Award, Loader2, AlertTriangle } from 'lucide-react';
 
 const Home: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const data = await fetchProducts();
+        setProducts(data);
+      } catch (err: any) {
+        setError(err.message || 'Nepodařilo se načíst služby.');
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadProducts();
+  }, []);
+
   return (
     <div>
       {/* Hero Section */}
@@ -82,19 +104,35 @@ const Home: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-end mb-12">
             <h2 className="text-3xl font-bold text-gray-800">Naše služby</h2>
-            <Link 
-              to="/produkty" 
+            <Link
+              to="/produkty"
               className="text-blue-700 font-medium flex items-center hover:text-blue-800 transition-colors duration-200"
             >
               Zobrazit vše <ArrowRight size={16} className="ml-1" />
             </Link>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+
+          {isLoading ? (
+            <div className="flex justify-center items-center min-h-[200px]">
+              <Loader2 size={32} className="animate-spin text-blue-700" />
+              <p className="ml-4 text-lg text-gray-600">Načítání služeb...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center text-red-600">
+              <AlertTriangle size={32} className="mx-auto mb-2" />
+              <p>{error}</p>
+            </div>
+          ) : products.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {products.slice(0, 6).map(product => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center text-gray-600">
+              <p>Žádné služby k zobrazení.</p>
+            </div>
+          )}
         </div>
       </section>
 
