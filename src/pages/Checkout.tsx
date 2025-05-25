@@ -3,7 +3,35 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { createOrderAndInitiateCheckout, OrderPayload } from '../services/api'; // Import the API function
 import { ShippingAddress, OrderItemInput } from '../types'; // Import necessary types
-// import { Check } from 'lucide-react'; // 'Check' is no longer used
+import countries from 'i18n-iso-countries';
+import cs from 'i18n-iso-countries/langs/cs.json';
+
+declare global {
+  interface Window {
+    Lemon?: { open: (url: string) => void };
+  }
+}
+
+countries.registerLocale(cs);
+
+function CountrySelect({ value, onChange }: { value: string; onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void }) {
+  const countryOptions = Object.entries(countries.getNames('cs', { select: 'official' }))
+    .map(([code, name]) => ({ code, name }));
+  return (
+    <select
+      id="country"
+      name="country"
+      value={value}
+      onChange={onChange}
+      required
+      className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
+    >
+      {countryOptions.map((c) => (
+        <option key={c.code} value={c.code}>{c.name}</option>
+      ))}
+    </select>
+  );
+}
 
 const Checkout: React.FC = () => {
   const navigate = useNavigate();
@@ -16,17 +44,12 @@ const Checkout: React.FC = () => {
     street: '',
     city: '',
     zip: '',
-    country: 'Česká republika', // Assuming a default or add a field for it
-    paymentMethod: 'card', // This will be handled by Polar, but keep for now if UI depends on it
-    note: ''
+    country: 'CZ',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  // isComplete state will be handled by redirecting to a success/failure page from Polar
-  // For now, we can remove the local 'isComplete' logic or adapt it for the success page.
-  // Let's remove the local 'isComplete' for now as Polar handles the post-payment flow.
 
-  if (cartItems.length === 0) { // Removed !isComplete as it's handled by Polar redirects
+  if (cartItems.length === 0) {
     navigate('/produkty');
     return null;
   }
@@ -41,25 +64,12 @@ const Checkout: React.FC = () => {
     setIsSubmitting(true);
     setError(null);
 
-    if (formState.paymentMethod !== 'card') {
-        // If you want to support other methods directly without Polar, handle them here.
-        // For now, assuming 'card' means proceed to Polar.
-        // You might want to disable other payment methods or clarify they are not processed via Polar.
-        // alert('Pro platbu bankovním převodem vás budeme kontaktovat.');
-        // setIsSubmitting(false);
-        // return;
-        // For this integration, we assume 'card' payment will go to Polar.
-        // If other methods are selected, you might want to prevent submission to Polar.
-        // However, the backend currently creates a Polar session regardless.
-        // This part of the UI/UX might need refinement based on how you want to handle non-Polar payments.
-    }
-
     const shippingAddress: ShippingAddress = {
       full_name: `${formState.firstName} ${formState.lastName}`,
       street: formState.street,
       city: formState.city,
       postal_code: formState.zip,
-      country: formState.country, // Make sure 'country' is part of your formState or hardcoded
+      country: formState.country,
       phone: formState.phone,
     };
 
@@ -71,18 +81,19 @@ const Checkout: React.FC = () => {
     const orderPayload: OrderPayload = {
       items: orderItems,
       shipping_address: shippingAddress,
-      // billing_address: shippingAddress, // Set if different
+      billing_address: shippingAddress,
       customer_email: formState.email, // Add customer email to the payload
     };
 
     try {
       const response = await createOrderAndInitiateCheckout(orderPayload);
       if (response.checkoutUrl) {
-        // Clear cart before redirecting, or on the success page after payment.
-        // Clearing here means if user cancels on Polar, cart is empty.
-        // Consider clearing on the success page instead.
-        // clearCart();
-        window.location.href = response.checkoutUrl; // Redirect to Polar
+        // Try to open LemonSqueezy overlay
+        if (window.Lemon && typeof window.Lemon.open === 'function') {
+          window.Lemon.open(response.checkoutUrl);
+        } else {
+          window.location.href = response.checkoutUrl;
+        }
       } else {
         setError('Nepodařilo se získat odkaz pro platbu. Zkuste to prosím znovu.');
         setIsSubmitting(false);
@@ -97,10 +108,6 @@ const Checkout: React.FC = () => {
       setIsSubmitting(false);
     }
   };
-
-  // The 'isComplete' block is removed as success is handled by redirect from Polar.
-  // You will create separate /order/success and /order/cancel pages.
-  // if (isComplete) {
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -177,7 +184,7 @@ const Checkout: React.FC = () => {
             </div>
 
             <h2 className="text-xl font-semibold mb-6 pb-2 border-b mt-8 text-gray-800">
-              Doručovací Adresa
+              Adresa
             </h2>
             
             <div className="grid grid-cols-1 gap-4 mb-6">
@@ -226,72 +233,13 @@ const Checkout: React.FC = () => {
                     className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
-                 <div>
+                <div>
                   <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
                     Země *
                   </label>
-                  <input // Or a select dropdown
-                    type="text"
-                    id="country"
-                    name="country"
-                    value={formState.country}
-                    onChange={handleChange}
-                    required
-                    className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                  />
+                  <CountrySelect value={formState.country} onChange={handleChange} />
                 </div>
               </div>
-            </div>
-
-            {/* Payment method selection might be simplified if Polar is the only card option */}
-            <h2 className="text-xl font-semibold mb-6 pb-2 border-b mt-8 text-gray-800">
-              Způsob platby (Přesměrování na Polar)
-            </h2>
-            
-            <div className="space-y-4 mb-6">
-              <div className="flex items-center">
-                <input
-                  type="radio"
-                  id="card"
-                  name="paymentMethod"
-                  value="card"
-                  checked={formState.paymentMethod === 'card'}
-                  onChange={handleChange}
-                  className="h-4 w-4 text-blue-700 focus:ring-blue-500"
-                />
-                <label htmlFor="card" className="ml-2 text-gray-700">
-                  Platba kartou
-                </label>
-              </div>
-              
-              <div className="flex items-center">
-                <input
-                  type="radio"
-                  id="bank"
-                  name="paymentMethod"
-                  value="bank"
-                  checked={formState.paymentMethod === 'bank'}
-                  onChange={handleChange}
-                  className="h-4 w-4 text-blue-700 focus:ring-blue-500"
-                />
-                <label htmlFor="bank" className="ml-2 text-gray-700">
-                  Bankovní převod
-                </label>
-              </div>
-            </div>
-
-            <div className="mt-8">
-              <label htmlFor="note" className="block text-sm font-medium text-gray-700 mb-1">
-                Poznámka k objednávce
-              </label>
-              <textarea
-                id="note"
-                name="note"
-                value={formState.note}
-                onChange={handleChange}
-                rows={4}
-                className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-              ></textarea>
             </div>
           </form>
         </div>
@@ -344,7 +292,7 @@ const Checkout: React.FC = () => {
                   : 'bg-blue-700 hover:bg-blue-800 text-white'
               }`}
             >
-              {isSubmitting ? 'Zpracovávám...' : 'Přejít k platbě (Polar)'}
+              {isSubmitting ? 'Zpracovávám...' : 'Přejít k platbě'}
             </button>
           </div>
         </div>

@@ -36,7 +36,7 @@ const Cart: React.FC = () => {
                   <div className="flex flex-col sm:flex-row">
                     <div className="sm:w-24 sm:h-24 mb-4 sm:mb-0">
                       <img 
-                        src={item.product.image} 
+                        src={item.product.image_url} 
                         alt={item.product.name} 
                         className="w-full h-full object-cover rounded"
                       />
