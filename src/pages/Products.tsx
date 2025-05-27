@@ -72,44 +72,42 @@ const Products: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 bg-white text-gray-900 dark:bg-dark-background dark:text-dark-on-background">
-      <h1 className="text-3xl font-bold mb-2 text-gray-800 dark:text-dark-on-background">Naše fotky</h1>
-      <p className="text-gray-600 mb-8 dark:text-dark-text-medium">
-        Prohlédněte si naši nabídku profesionálních fotek
+    <div className="container mx-auto px-4 py-8 bg-white text-gray-900 dark:bg-dark-background dark:text-dark-on-background">
+      <h1 className="text-4xl font-extrabold mb-4 text-gray-800 dark:text-dark-on-background text-center">Naše exkluzivní fotky</h1>
+      <p className="text-lg text-gray-600 mb-10 dark:text-dark-text-medium text-center max-w-2xl mx-auto">
+        Prohlédněte si naši rozmanitou nabídku profesionálních fotek, pečlivě vybraných pro vaši inspiraci a potřeby.
       </p>
 
       <button
-        className="md:hidden flex items-center mb-4 text-blue-600 dark:text-dark-primary"
+        className="md:hidden flex items-center justify-center w-full py-3 px-4 mb-6 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors duration-200 dark:bg-dark-primary dark:hover:bg-dark-primary-dark dark:text-dark-on-primary"
         onClick={() => setShowFilters(!showFilters)}
       >
-        <Filter size={18} className="mr-2" />
-        {showFilters ? 'Skrýt filtry' : 'Zobrazit filtry'}
+        <Filter size={20} className="mr-2" />
+        {showFilters ? 'Skrýt filtry a řazení' : 'Zobrazit filtry a řazení'}
       </button>
 
       <div className="flex flex-col md:flex-row gap-8">
         <aside className={`md:w-1/4 lg:w-1/5 ${showFilters ? 'block' : 'hidden'} md:block`}>
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 dark:bg-dark-surface dark:border-dark-border">
-            <h2 className="font-semibold text-lg mb-4 text-gray-800 dark:text-dark-on-surface">Kategorie</h2>
-            <div className="space-y-2">
+          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 dark:bg-dark-surface dark:border-dark-border">
+            <h2 className="font-bold text-xl mb-5 text-gray-800 dark:text-dark-on-surface">Kategorie</h2>
+            <div className="space-y-3">
               <button
-                className={`block w-full text-left py-2 px-3 rounded ${
-                  selectedCategory === null
-                    ? 'bg-blue-600 text-white dark:bg-dark-primary dark:text-dark-on-primary'
-                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'
-                } transition-colors duration-200`}
+                className={`block w-full text-left py-2.5 px-4 rounded-lg transition-colors duration-200 ${selectedCategory === null
+                    ? 'bg-blue-600 text-white shadow-md dark:bg-dark-primary dark:text-dark-on-primary'
+                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'}
+                `}
                 onClick={() => setSelectedCategory(null)}
               >
-                Všechny
+                Všechny fotky
               </button>
-              
+
               {categories.map(category => (
                 <button
                   key={category}
-                  className={`block w-full text-left py-2 px-3 rounded ${
-                    selectedCategory === category
-                      ? 'bg-blue-600 text-white dark:bg-dark-primary dark:text-dark-on-primary'
-                      : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'
-                  } transition-colors duration-200`}
+                  className={`block w-full text-left py-2.5 px-4 rounded-lg transition-colors duration-200 ${selectedCategory === category
+                      ? 'bg-blue-600 text-white shadow-md dark:bg-dark-primary dark:text-dark-on-primary'
+                      : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'}
+                  `}
                   onClick={() => setSelectedCategory(category)}
                 >
                   {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -117,48 +115,44 @@ const Products: React.FC = () => {
               ))}
               {/* Add 18+ category */}
               <button
-                className={`block w-full text-left py-2 px-3 rounded ${
-                  selectedCategory === '18+'
-                    ? 'bg-blue-600 text-white dark:bg-dark-primary dark:text-dark-on-primary'
-                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'
-                } transition-colors duration-200`}
+                className={`block w-full text-left py-2.5 px-4 rounded-lg transition-colors duration-200 ${selectedCategory === '18+'
+                    ? 'bg-blue-600 text-white shadow-md dark:bg-dark-primary dark:text-dark-on-primary'
+                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'}
+                `}
                 onClick={() => setSelectedCategory('18+')}
               >
-                18+
+                18+ Obsah
               </button>
             </div>
 
-            <h2 className="font-semibold text-lg mt-6 mb-4 text-gray-800 dark:text-dark-on-surface">Řazení</h2>
-            <div className="space-y-2">
+            <h2 className="font-bold text-xl mt-8 mb-5 text-gray-800 dark:text-dark-on-surface">Řazení</h2>
+            <div className="space-y-3">
               <button
-                className={`block w-full text-left py-2 px-3 rounded ${
-                  sortBy === 'default'
-                    ? 'bg-blue-600 text-white dark:bg-dark-primary dark:text-dark-on-primary'
-                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'
-                } transition-colors duration-200`}
+                className={`block w-full text-left py-2.5 px-4 rounded-lg transition-colors duration-200 ${sortBy === 'default'
+                    ? 'bg-blue-600 text-white shadow-md dark:bg-dark-primary dark:text-dark-on-primary'
+                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'}
+                `}
                 onClick={() => setSortBy('default')}
               >
-                Základní
+                Výchozí řazení
               </button>
               <button
-                className={`block w-full text-left py-2 px-3 rounded ${
-                  sortBy === 'price-asc'
-                    ? 'bg-blue-600 text-white dark:bg-dark-primary dark:text-dark-on-primary'
-                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'
-                } transition-colors duration-200`}
+                className={`block w-full text-left py-2.5 px-4 rounded-lg transition-colors duration-200 ${sortBy === 'price-asc'
+                    ? 'bg-blue-600 text-white shadow-md dark:bg-dark-primary dark:text-dark-on-primary'
+                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'}
+                `}
                 onClick={() => setSortBy('price-asc')}
               >
-                Cena: nejnižší
+                Cena: Od nejnižší
               </button>
               <button
-                className={`block w-full text-left py-2 px-3 rounded ${
-                  sortBy === 'price-desc'
-                    ? 'bg-blue-600 text-white dark:bg-dark-primary dark:text-dark-on-primary'
-                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'
-                } transition-colors duration-200`}
+                className={`block w-full text-left py-2.5 px-4 rounded-lg transition-colors duration-200 ${sortBy === 'price-desc'
+                    ? 'bg-blue-600 text-white shadow-md dark:bg-dark-primary dark:text-dark-on-primary'
+                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'}
+                `}
                 onClick={() => setSortBy('price-desc')}
               >
-                Cena: nejvyšší
+                Cena: Od nejvyšší
               </button>
             </div>
           </div>
@@ -166,14 +160,14 @@ const Products: React.FC = () => {
 
         <div className="md:w-3/4 lg:w-4/5">
           {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
           ) : (
-              <div className="bg-white rounded-lg shadow-sm p-8 text-center border border-gray-200 dark:bg-dark-surface dark:border-dark-border">
-                <p className="text-gray-600 dark:text-dark-text-medium">Žádné fotky nenalezeny pro vybrané filtry.</p>
+              <div className="bg-white rounded-xl shadow-lg p-8 text-center border border-gray-200 dark:bg-dark-surface dark:border-dark-border">
+                <p className="text-xl text-gray-600 dark:text-dark-text-medium">Žádné fotky nebyly nalezeny pro vybrané filtry. Zkuste prosím upravit svá kritéria.</p>
               </div>
           )}
         </div>

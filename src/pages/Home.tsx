@@ -30,28 +30,28 @@ const Home: React.FC = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative h-[70vh] max-h-[600px] flex items-center bg-white text-gray-900 dark:bg-dark-background dark:text-dark-on-background overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="container mx-auto px-4 z-10">
-          <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 dark:from-dark-primary dark:via-dark-secondary dark:to-blue-500 bg-clip-text text-transparent">
-              Unikátní digitální umění - portréty všech etnik
+      <section className="relative h-[80vh] max-h-[700px] flex items-center justify-center text-center bg-gradient-to-r from-blue-500 to-blue-700 dark:from-dark-primary dark:to-dark-secondary overflow-hidden">
+        <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'url("https://source.unsplash.com/random/1600x900?abstract,art")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+        <div className="container mx-auto px-4 z-10 text-white">
+          <div className="max-w-3xl mx-auto">
+            <h1 className="text-5xl md:text-6xl font-extrabold mb-6 leading-tight drop-shadow-lg">
+              Objevte Svět Digitálního Umění
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-gray-700 dark:text-dark-text-light">
-              Objevte a nakupujte unikátní digitální portréty. Různá etnika, věkové kategorie, styly - včetně sekce 18+.
+            <p className="text-xl md:text-2xl mb-10 opacity-90">
+              Prozkoumejte naši exkluzivní kolekci digitálních portrétů a najděte inspiraci pro vaše projekty.
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               <Link
                 to="/produkty"
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 dark:bg-dark-primary dark:text-dark-on-primary dark:hover:bg-dark-primary-dark transition-colors duration-300 shadow-lg"
+                className="bg-white text-blue-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-lg transform hover:scale-105"
               >
-                Prohlédnout díla
+                Prohlédnout celou galerii <ArrowRight size={20} className="inline-block ml-2" />
               </Link>
               <Link
                 to="#jak"
-                className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 hover:text-white dark:border-dark-primary dark:text-dark-primary dark:hover:bg-dark-primary dark:hover:text-dark-on-primary transition-colors duration-300"
+                className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-blue-600 transition-all duration-300 shadow-lg transform hover:scale-105"
               >
-                Jak to funguje
+                Jak to funguje?
               </Link>
             </div>
           </div>
@@ -59,82 +59,82 @@ const Home: React.FC = () => {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-16 bg-gray-100 dark:bg-dark-surface">
+      <section className="py-20 bg-gray-50 dark:bg-dark-surface">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-dark-on-surface">Proč Faces?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center border border-gray-200 dark:bg-dark-background dark:border-dark-border">
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-full mb-4 dark:from-dark-primary dark:to-dark-secondary">
-                <CheckCircle className="text-white dark:text-dark-on-primary" size={28} />
+          <h2 className="text-4xl font-extrabold text-center mb-16 text-gray-800 dark:text-dark-on-surface">Proč si vybrat Faces?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div className="bg-white p-8 rounded-2xl shadow-xl flex flex-col items-center text-center border border-gray-200 dark:bg-dark-background dark:border-dark-border transform hover:scale-105 transition-transform duration-300">
+              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-full mb-6 shadow-md dark:from-dark-primary dark:to-dark-secondary">
+                <CheckCircle className="text-white dark:text-dark-on-primary" size={32} />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-dark-on-surface">Rozmanitost & Inspirace</h3>
-              <p className="text-gray-600 dark:text-dark-text-medium">Najdete zde tváře všech etnik, věků a stylů, včetně 18+ sekce. Ideální pro projekty, weby i inspiraci.</p>
+              <h3 className="text-2xl font-bold mb-3 text-gray-800 dark:text-dark-on-surface">Široká Rozmanitost</h3>
+              <p className="text-gray-600 dark:text-dark-text-medium leading-relaxed">Nabízíme tváře všech etnik, věků a stylů, včetně exkluzivní 18+ sekce. Ideální pro jakýkoli projekt.</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center border border-gray-200 dark:bg-dark-background dark:border-dark-border">
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-full mb-4 dark:from-dark-primary dark:to-dark-secondary">
-                <Award className="text-white dark:text-dark-on-primary" size={28} />
+            <div className="bg-white p-8 rounded-2xl shadow-xl flex flex-col items-center text-center border border-gray-200 dark:bg-dark-background dark:border-dark-border transform hover:scale-105 transition-transform duration-300">
+              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-full mb-6 shadow-md dark:from-dark-primary dark:to-dark-secondary">
+                <Award className="text-white dark:text-dark-on-primary" size={32} />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-dark-on-surface">100% Originální</h3>
-              <p className="text-gray-600 dark:text-dark-text-medium">Každé dílo je originál vytvořený s důrazem na kvalitu a rozmanitost.</p>
+              <h3 className="text-2xl font-bold mb-3 text-gray-800 dark:text-dark-on-surface">100% Originalita</h3>
+              <p className="text-gray-600 dark:text-dark-text-medium leading-relaxed">Každé digitální dílo je unikátní, vytvořené s precizností a důrazem na nejvyšší kvalitu a detail.</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center border border-gray-200 dark:bg-dark-background dark:border-dark-border">
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-full mb-4 dark:from-dark-primary dark:to-dark-secondary">
-                <Clock className="text-white dark:text-dark-on-primary" size={28} />
+            <div className="bg-white p-8 rounded-2xl shadow-xl flex flex-col items-center text-center border border-gray-200 dark:bg-dark-background dark:border-dark-border transform hover:scale-105 transition-transform duration-300">
+              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-full mb-6 shadow-md dark:from-dark-primary dark:to-dark-secondary">
+                <Clock className="text-white dark:text-dark-on-primary" size={32} />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-dark-on-surface">Okamžité stažení</h3>
-              <p className="text-gray-600 dark:text-dark-text-medium">Po zaplacení ihned obdržíte fotky na e-mail. Bez čekání, bez omezení.</p>
+              <h3 className="text-2xl font-bold mb-3 text-gray-800 dark:text-dark-on-surface">Okamžité Stažení</h3>
+              <p className="text-gray-600 dark:text-dark-text-medium leading-relaxed">Získejte přístup k zakoupeným fotkám ihned po zaplacení. Rychle, bezpečně a bez čekání.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Featured Products */}
-      <section className="py-16 bg-white dark:bg-dark-background">
+      <section className="py-20 bg-white dark:bg-dark-background">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-end mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 dark:text-dark-on-background">Naše díla</h2>
+          <div className="flex justify-between items-center mb-12">
+            <h2 className="text-4xl font-extrabold text-gray-800 dark:text-dark-on-background">Nejnovější díla</h2>
             <Link
               to="/produkty"
-              className="text-blue-600 font-medium flex items-center hover:text-blue-700 dark:text-dark-primary dark:hover:text-dark-primary-dark transition-colors duration-200"
+              className="text-blue-600 font-bold text-lg flex items-center hover:text-blue-700 dark:text-dark-primary dark:hover:text-dark-primary-dark transition-colors duration-200"
             >
-              Zobrazit vše <ArrowRight size={16} className="ml-1" />
+              Zobrazit celou kolekci <ArrowRight size={20} className="ml-2" />
             </Link>
           </div>
 
           {isLoading ? (
-            <div className="flex justify-center items-center min-h-[200px]">
-              <Loader2 size={32} className="animate-spin text-blue-600 dark:text-dark-primary" />
-              <p className="ml-4 text-lg text-gray-600 dark:text-dark-text-medium">Načítání děl...</p>
+            <div className="flex justify-center items-center min-h-[300px]">
+              <Loader2 size={48} className="animate-spin text-blue-600 dark:text-dark-primary" />
+              <p className="ml-4 text-xl text-gray-600 dark:text-dark-text-medium">Načítání děl...</p>
             </div>
           ) : error ? (
-            <div className="text-center text-red-600 dark:text-dark-error">
-              <AlertTriangle size={32} className="mx-auto mb-2" />
-              <p>{error}</p>
+            <div className="text-center text-red-600 dark:text-dark-error py-10">
+              <AlertTriangle size={48} className="mx-auto mb-4" />
+              <p className="text-xl">{error}</p>
             </div>
           ) : products.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {products.slice(0, 6).map(product => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {products.slice(0, 8).map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
           ) : (
-            <div className="text-center text-gray-600 dark:text-dark-text-medium">
-              <p>Žádná díla k zobrazení.</p>
+            <div className="text-center text-gray-600 dark:text-dark-text-medium py-10">
+              <p className="text-xl">Žádná díla k zobrazení.</p>
             </div>
           )}
         </div>
       </section>
 
       {/* Call to Action */}
-      <section className="bg-blue-600 text-white py-16 dark:bg-dark-primary dark:text-dark-on-primary">
+      <section className="bg-blue-600 text-white py-20 dark:bg-dark-primary dark:text-dark-on-primary">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Připraveni začít?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Kontaktujte nás ještě dnes a my vám připravíme nabídku na míru vašim potřebám.
+          <h2 className="text-4xl font-extrabold mb-6">Máte speciální požadavek?</h2>
+          <p className="text-xl mb-10 max-w-3xl mx-auto opacity-90">
+            Pokud potřebujete něco na míru, neváhejte nás kontaktovat. Rádi vám pomůžeme s vaším projektem.
           </p>
           <Link
             to="#"
-            className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 hover:text-blue-700 dark:bg-dark-on-primary dark:text-dark-primary dark:hover:bg-dark-surface dark:hover:text-dark-on-surface transition-colors duration-300 inline-block"
+            className="bg-white text-blue-600 px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 hover:text-blue-700 transition-colors duration-300 inline-block shadow-lg transform hover:scale-105"
           >
             Kontaktujte nás
           </Link>

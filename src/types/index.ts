@@ -5,6 +5,7 @@ export interface Product {
   description: string;
   shortDescription?: string; // Keep as optional or ensure backend provides it
   main_image_url?: string;
+  rating: number;
   sub_image_urls?: string[];
   likes?: string[];
   is_18_plus?: boolean;
