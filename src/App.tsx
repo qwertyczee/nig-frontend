@@ -13,7 +13,7 @@ function App() {
   return (
     <CartProvider>
       <Router>
-        <div className="flex flex-col min-h-screen bg-gray-50">
+        <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-dark-background">
           <Header />
           <main className="flex-grow">
             <Routes>

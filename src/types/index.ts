@@ -4,7 +4,11 @@ export interface Product {
   price: number;
   description: string;
   shortDescription?: string; // Keep as optional or ensure backend provides it
-  image_url?: string; // Changed from image to image_url to match Supabase
+  main_image_url?: string;
+  sub_image_urls?: string[];
+  likes?: string[];
+  is_18_plus?: boolean;
+  mail_content?: string;
   category?: string;
   in_stock?: boolean;
   created_at?: string;

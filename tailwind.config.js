@@ -1,9 +1,31 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class', // Enable dark mode
   theme: {
     extend: {
       colors: {
+        // Dark theme palette
+        dark: {
+          'background': '#7c3aed',
+          'surface': '#1E1E1E',
+          'primary': '#BB86FC',
+          'primary-dark': '#3700B3',
+          'secondary': '#03DAC6',
+          'error': '#CF6679',
+          'on-primary': '#000000',
+          'on-secondary': '#000000',
+          'on-background': '#FFFFFF',
+          'on-surface': '#FFFFFF',
+          'on-error': '#000000',
+          'text-light': '#E0E0E0',
+          'text-medium': '#B0B0B0',
+          'text-dark': '#808080',
+          'border': '#404040',
+          'hover': '#2A2A2A',
+          'active': '#3A3A3A',
+        },
+        // Existing colors (can be adapted or removed if not needed for dark theme)
         blue: {
           50: '#f1f5f9',
           100: '#e2e8f0',

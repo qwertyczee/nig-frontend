@@ -24,7 +24,7 @@ function CountrySelect({ value, onChange }: { value: string; onChange: (e: React
       value={value}
       onChange={onChange}
       required
-      className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
+      className="w-full border border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
     >
       {countryOptions.map((c) => (
         <option key={c.code} value={c.code}>{c.name}</option>
@@ -110,20 +110,20 @@ const Checkout: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">Pokladna</h1>
+    <div className="container mx-auto px-4 py-12 bg-dark-background text-dark-on-background">
+      <h1 className="text-3xl font-bold mb-8 text-dark-on-background">Pokladna</h1>
 
       <div className="lg:flex lg:gap-8">
         {/* Checkout Form */}
         <div className="lg:w-2/3">
-          <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-xl font-semibold mb-6 pb-2 border-b text-gray-800">
+          <form onSubmit={handleSubmit} className="bg-dark-surface rounded-lg shadow-sm p-6 border border-dark-border">
+            <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-dark-border text-dark-on-surface">
               Kontaktní údaje
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="firstName" className="block text-sm font-medium text-dark-text-light mb-1">
                   Jméno *
                 </label>
                 <input
@@ -133,12 +133,12 @@ const Checkout: React.FC = () => {
                   value={formState.firstName}
                   onChange={handleChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
                 />
               </div>
               
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="lastName" className="block text-sm font-medium text-dark-text-light mb-1">
                   Příjmení *
                 </label>
                 <input
@@ -148,12 +148,12 @@ const Checkout: React.FC = () => {
                   value={formState.lastName}
                   onChange={handleChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
                 />
               </div>
               
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="email" className="block text-sm font-medium text-dark-text-light mb-1">
                   E-mail *
                 </label>
                 <input
@@ -163,12 +163,12 @@ const Checkout: React.FC = () => {
                   value={formState.email}
                   onChange={handleChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
                 />
               </div>
               
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="phone" className="block text-sm font-medium text-dark-text-light mb-1">
                   Telefon *
                 </label>
                 <input
@@ -178,18 +178,18 @@ const Checkout: React.FC = () => {
                   value={formState.phone}
                   onChange={handleChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
                 />
               </div>
             </div>
 
-            <h2 className="text-xl font-semibold mb-6 pb-2 border-b mt-8 text-gray-800">
+            <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-dark-border mt-8 text-dark-on-surface">
               Adresa
             </h2>
             
             <div className="grid grid-cols-1 gap-4 mb-6">
               <div>
-                <label htmlFor="street" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="street" className="block text-sm font-medium text-dark-text-light mb-1">
                   Ulice a číslo *
                 </label>
                 <input
@@ -199,13 +199,13 @@ const Checkout: React.FC = () => {
                   value={formState.street}
                   onChange={handleChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
                 />
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="city" className="block text-sm font-medium text-dark-text-light mb-1">
                     Město *
                   </label>
                   <input
@@ -215,12 +215,12 @@ const Checkout: React.FC = () => {
                     value={formState.city}
                     onChange={handleChange}
                     required
-                    className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="zip" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="zip" className="block text-sm font-medium text-dark-text-light mb-1">
                     PSČ *
                   </label>
                   <input
@@ -230,11 +230,11 @@ const Checkout: React.FC = () => {
                     value={formState.zip}
                     onChange={handleChange}
                     required
-                    className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
                   />
                 </div>
                 <div>
-                  <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="country" className="block text-sm font-medium text-dark-text-light mb-1">
                     Země *
                   </label>
                   <CountrySelect value={formState.country} onChange={handleChange} />
@@ -246,20 +246,20 @@ const Checkout: React.FC = () => {
 
         {/* Order Summary */}
         <div className="lg:w-1/3 mt-8 lg:mt-0">
-          <div className="bg-white rounded-lg shadow-sm p-6 sticky top-24">
-            <h2 className="text-xl font-semibold mb-4 pb-4 border-b text-gray-800">
+          <div className="bg-dark-surface rounded-lg shadow-sm p-6 sticky top-24 border border-dark-border">
+            <h2 className="text-xl font-semibold mb-4 pb-4 border-b border-dark-border text-dark-on-surface">
               Shrnutí objednávky
             </h2>
             
             {error && (
-              <div className="mb-4 p-3 bg-red-100 text-red-700 border border-red-300 rounded-lg">
+              <div className="mb-4 p-3 bg-dark-error text-dark-on-error border border-dark-error rounded-lg">
                 {error}
               </div>
             )}
 
             <div className="space-y-3 mb-6">
               {cartItems.map(item => (
-                <div key={item.product.id} className="flex justify-between text-gray-700">
+                <div key={item.product.id} className="flex justify-between text-dark-text-light">
                   <span>
                     {item.product.name} ({item.quantity}x)
                   </span>
@@ -268,12 +268,12 @@ const Checkout: React.FC = () => {
               ))}
             </div>
             
-            <div className="border-t pt-4 mb-6">
-              <div className="flex justify-between font-bold text-gray-800">
+            <div className="border-t border-dark-border pt-4 mb-6">
+              <div className="flex justify-between font-bold text-dark-on-surface">
                 <span>Celkem</span>
                 <span>{totalPrice} Kč</span>
               </div>
-              <p className="text-sm text-gray-500 mt-1">Včetně DPH</p>
+              <p className="text-sm text-dark-text-medium mt-1">Včetně DPH</p>
             </div>
             
             {/* The button inside the form will trigger the form's onSubmit */}
@@ -288,8 +288,8 @@ const Checkout: React.FC = () => {
               disabled={isSubmitting || cartItems.length === 0}
               className={`w-full py-3 px-6 rounded-lg font-semibold flex items-center justify-center transition-colors duration-300 ${
                 (isSubmitting || cartItems.length === 0)
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-blue-700 hover:bg-blue-800 text-white'
+                  ? 'bg-gray-700 cursor-not-allowed text-dark-text-dark'
+                  : 'bg-dark-primary hover:bg-dark-primary-dark text-dark-on-primary'
               }`}
             >
               {isSubmitting ? 'Zpracovávám...' : 'Přejít k platbě'}

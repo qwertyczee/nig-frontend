@@ -69,38 +69,38 @@ const OrderSuccess: React.FC = () => {
   }, [location.search]);
 
   return (
-    <div className="container mx-auto mt-10 p-5 text-center">
-      <h1 className="text-3xl font-bold text-green-600 mb-4">Payment Successful!</h1>
-      <p className="text-lg mb-2">Thank you for your order.</p>
+    <div className="container mx-auto mt-10 p-5 text-center bg-dark-background text-dark-on-background min-h-screen">
+      <h1 className="text-3xl font-bold text-dark-secondary mb-4">Platba proběhla úspěšně!</h1>
+      <p className="text-lg mb-2 text-dark-text-light">Děkujeme za vaši objednávku.</p>
       
       {customerSessionToken && !loading && !error && !orderDetails && (
-         <p className="text-md mb-4">
-           Attempting to load order details for token: <span className="font-semibold">{customerSessionToken}</span>
+         <p className="text-md mb-4 text-dark-text-medium">
+           Načítání detailů objednávky pro token: <span className="font-semibold">{customerSessionToken}</span>
          </p>
       )}
 
-      {loading && <p className="text-lg text-blue-500">Loading order details...</p>}
+      {loading && <p className="text-lg text-dark-primary">Načítání detailů objednávky...</p>}
       
-      {error && <p className="text-lg text-red-500">Error: {error}</p>}
+      {error && <p className="text-lg text-dark-error">Chyba: {error}</p>}
 
       {orderDetails && (
-        <div className="mt-6 p-4 border border-gray-300 rounded-lg bg-gray-100 text-left max-w-2xl mx-auto">
-          <h2 className="text-2xl font-semibold mb-3 text-gray-800">Order Confirmation</h2>
-          <p><strong>Order ID (Polar Session):</strong> {orderDetails.id}</p>
+        <div className="mt-6 p-4 border border-dark-border rounded-lg bg-dark-surface text-left max-w-2xl mx-auto text-dark-text-light">
+          <h2 className="text-2xl font-semibold mb-3 text-dark-on-surface">Potvrzení objednávky</h2>
+          <p><strong>ID objednávky (Polar Session):</strong> {orderDetails.id}</p>
           {orderDetails.metadata?.internal_order_id && (
-            <p><strong>Internal Order Ref:</strong> {orderDetails.metadata.internal_order_id}</p>
+            <p><strong>Interní reference objednávky:</strong> {orderDetails.metadata.internal_order_id}</p>
           )}
-          {orderDetails.status && <p><strong>Status:</strong> <span className="capitalize">{orderDetails.status}</span></p>}
-          {orderDetails.customer_email && <p><strong>Email:</strong> {orderDetails.customer_email}</p>}
+          {orderDetails.status && <p><strong>Stav:</strong> <span className="capitalize">{orderDetails.status}</span></p>}
+          {orderDetails.customer_email && <p><strong>E-mail:</strong> {orderDetails.customer_email}</p>}
           {typeof orderDetails.amount_total === 'number' && orderDetails.currency && (
             <p>
-              <strong>Total Amount:</strong> {(orderDetails.amount_total / 100).toFixed(2)} {orderDetails.currency.toUpperCase()}
+              <strong>Celková částka:</strong> {(orderDetails.amount_total / 100).toFixed(2)} {orderDetails.currency.toUpperCase()}
             </p>
           )}
 
           {orderDetails.line_items && orderDetails.line_items.data && orderDetails.line_items.data.length > 0 && (
             <div className="mt-4">
-              <h3 className="text-xl font-semibold mb-2 text-gray-700">Items:</h3>
+              <h3 className="text-xl font-semibold mb-2 text-dark-on-surface">Položky:</h3>
               <ul className="list-disc list-inside">
                 {orderDetails.line_items.data.map(item => (
                   <li key={item.id || item.description} className="mb-1">
@@ -110,16 +110,16 @@ const OrderSuccess: React.FC = () => {
               </ul>
             </div>
           )}
-          <p className="mt-4 text-sm text-gray-600">A confirmation email has been sent to you (if applicable).</p>
+          <p className="mt-4 text-sm text-dark-text-medium">Potvrzovací e-mail vám byl zaslán (pokud je to relevantní).</p>
         </div>
       )}
 
-      <p className="mt-8 mb-6">We have received your payment and your order is being processed.</p>
+      <p className="mt-8 mb-6 text-dark-text-light">Vaše platba byla přijata a objednávka je zpracovávána.</p>
       <Link
         to="/"
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out"
+        className="bg-dark-primary hover:bg-dark-primary-dark text-dark-on-primary font-bold py-2 px-4 rounded transition duration-150 ease-in-out"
       >
-        Continue Shopping
+        Pokračovat v nákupu
       </Link>
     </div>
   );
