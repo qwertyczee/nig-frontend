@@ -7,14 +7,14 @@ export default {
       colors: {
         // Dark theme palette
         dark: {
-          'background': '#7c3aed',
+          'background': '#121212',
           'surface': '#1E1E1E',
-          'primary': '#BB86FC',
-          'primary-dark': '#3700B3',
-          'secondary': '#03DAC6',
+          'primary': '#3B82F6',
+          'primary-dark': '#2563EB',
+          'secondary': '#047857',
           'error': '#CF6679',
-          'on-primary': '#000000',
-          'on-secondary': '#000000',
+          'on-primary': '#FFFFFF',
+          'on-secondary': '#FFFFFF',
           'on-background': '#FFFFFF',
           'on-surface': '#FFFFFF',
           'on-error': '#000000',

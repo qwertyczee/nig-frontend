@@ -48,22 +48,22 @@ const Products: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-12 flex justify-center items-center min-h-[60vh] bg-dark-background text-dark-on-background">
-        <Loader2 size={48} className="animate-spin text-dark-primary" />
-        <p className="ml-4 text-lg text-dark-text-medium">Načítání fotek...</p>
+      <div className="container mx-auto px-4 py-12 flex justify-center items-center min-h-[60vh] bg-white text-gray-900 dark:bg-dark-background dark:text-dark-on-background">
+        <Loader2 size={48} className="animate-spin text-blue-600 dark:text-dark-primary" />
+        <p className="ml-4 text-lg text-gray-600 dark:text-dark-text-medium">Načítání fotek...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-12 text-center bg-dark-background text-dark-on-background">
-        <AlertTriangle size={48} className="mx-auto text-dark-error mb-4" />
-        <h2 className="text-2xl font-bold mb-2 text-dark-error">Chyba</h2>
-        <p className="text-dark-text-medium">{error}</p>
+      <div className="container mx-auto px-4 py-12 text-center bg-white text-gray-900 dark:bg-dark-background dark:text-dark-on-background">
+        <AlertTriangle size={48} className="mx-auto text-red-600 dark:text-dark-error mb-4" />
+        <h2 className="text-2xl font-bold mb-2 text-red-600 dark:text-dark-error">Chyba</h2>
+        <p className="text-gray-600 dark:text-dark-text-medium">{error}</p>
         <button
           onClick={() => window.location.reload()} // Simple reload, or implement retry logic
-          className="mt-6 bg-dark-primary hover:bg-dark-primary-dark text-dark-on-primary py-2 px-4 rounded-lg"
+          className="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg dark:bg-dark-primary dark:hover:bg-dark-primary-dark dark:text-dark-on-primary"
         >
           Zkusit znovu
         </button>
@@ -72,14 +72,14 @@ const Products: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 bg-dark-background text-dark-on-background">
-      <h1 className="text-3xl font-bold mb-2 text-dark-on-background">Naše fotky</h1>
-      <p className="text-dark-text-medium mb-8">
+    <div className="container mx-auto px-4 py-12 bg-white text-gray-900 dark:bg-dark-background dark:text-dark-on-background">
+      <h1 className="text-3xl font-bold mb-2 text-gray-800 dark:text-dark-on-background">Naše fotky</h1>
+      <p className="text-gray-600 mb-8 dark:text-dark-text-medium">
         Prohlédněte si naši nabídku profesionálních fotek
       </p>
 
       <button
-        className="md:hidden flex items-center mb-4 text-dark-primary"
+        className="md:hidden flex items-center mb-4 text-blue-600 dark:text-dark-primary"
         onClick={() => setShowFilters(!showFilters)}
       >
         <Filter size={18} className="mr-2" />
@@ -88,14 +88,14 @@ const Products: React.FC = () => {
 
       <div className="flex flex-col md:flex-row gap-8">
         <aside className={`md:w-1/4 lg:w-1/5 ${showFilters ? 'block' : 'hidden'} md:block`}>
-          <div className="bg-dark-surface rounded-lg shadow-sm p-6 border border-dark-border">
-            <h2 className="font-semibold text-lg mb-4 text-dark-on-surface">Kategorie</h2>
+          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 dark:bg-dark-surface dark:border-dark-border">
+            <h2 className="font-semibold text-lg mb-4 text-gray-800 dark:text-dark-on-surface">Kategorie</h2>
             <div className="space-y-2">
               <button
                 className={`block w-full text-left py-2 px-3 rounded ${
                   selectedCategory === null
-                    ? 'bg-dark-primary text-dark-on-primary'
-                    : 'text-dark-text-light hover:bg-dark-hover'
+                    ? 'bg-blue-600 text-white dark:bg-dark-primary dark:text-dark-on-primary'
+                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'
                 } transition-colors duration-200`}
                 onClick={() => setSelectedCategory(null)}
               >
@@ -107,8 +107,8 @@ const Products: React.FC = () => {
                   key={category}
                   className={`block w-full text-left py-2 px-3 rounded ${
                     selectedCategory === category
-                      ? 'bg-dark-primary text-dark-on-primary'
-                      : 'text-dark-text-light hover:bg-dark-hover'
+                      ? 'bg-blue-600 text-white dark:bg-dark-primary dark:text-dark-on-primary'
+                      : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'
                   } transition-colors duration-200`}
                   onClick={() => setSelectedCategory(category)}
                 >
@@ -119,8 +119,8 @@ const Products: React.FC = () => {
               <button
                 className={`block w-full text-left py-2 px-3 rounded ${
                   selectedCategory === '18+'
-                    ? 'bg-dark-primary text-dark-on-primary'
-                    : 'text-dark-text-light hover:bg-dark-hover'
+                    ? 'bg-blue-600 text-white dark:bg-dark-primary dark:text-dark-on-primary'
+                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'
                 } transition-colors duration-200`}
                 onClick={() => setSelectedCategory('18+')}
               >
@@ -128,13 +128,13 @@ const Products: React.FC = () => {
               </button>
             </div>
 
-            <h2 className="font-semibold text-lg mt-6 mb-4 text-dark-on-surface">Řazení</h2>
+            <h2 className="font-semibold text-lg mt-6 mb-4 text-gray-800 dark:text-dark-on-surface">Řazení</h2>
             <div className="space-y-2">
               <button
                 className={`block w-full text-left py-2 px-3 rounded ${
                   sortBy === 'default'
-                    ? 'bg-dark-primary text-dark-on-primary'
-                    : 'text-dark-text-light hover:bg-dark-hover'
+                    ? 'bg-blue-600 text-white dark:bg-dark-primary dark:text-dark-on-primary'
+                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'
                 } transition-colors duration-200`}
                 onClick={() => setSortBy('default')}
               >
@@ -143,8 +143,8 @@ const Products: React.FC = () => {
               <button
                 className={`block w-full text-left py-2 px-3 rounded ${
                   sortBy === 'price-asc'
-                    ? 'bg-dark-primary text-dark-on-primary'
-                    : 'text-dark-text-light hover:bg-dark-hover'
+                    ? 'bg-blue-600 text-white dark:bg-dark-primary dark:text-dark-on-primary'
+                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'
                 } transition-colors duration-200`}
                 onClick={() => setSortBy('price-asc')}
               >
@@ -153,8 +153,8 @@ const Products: React.FC = () => {
               <button
                 className={`block w-full text-left py-2 px-3 rounded ${
                   sortBy === 'price-desc'
-                    ? 'bg-dark-primary text-dark-on-primary'
-                    : 'text-dark-text-light hover:bg-dark-hover'
+                    ? 'bg-blue-600 text-white dark:bg-dark-primary dark:text-dark-on-primary'
+                    : 'text-gray-700 hover:bg-gray-100 dark:text-dark-text-light dark:hover:bg-dark-hover'
                 } transition-colors duration-200`}
                 onClick={() => setSortBy('price-desc')}
               >
@@ -172,8 +172,8 @@ const Products: React.FC = () => {
               ))}
             </div>
           ) : (
-              <div className="bg-dark-surface rounded-lg shadow-sm p-8 text-center border border-dark-border">
-                <p className="text-dark-text-medium">Žádné fotky nenalezeny pro vybrané filtry.</p>
+              <div className="bg-white rounded-lg shadow-sm p-8 text-center border border-gray-200 dark:bg-dark-surface dark:border-dark-border">
+                <p className="text-gray-600 dark:text-dark-text-medium">Žádné fotky nenalezeny pro vybrané filtry.</p>
               </div>
           )}
         </div>
