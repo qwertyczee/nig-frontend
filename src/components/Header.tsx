@@ -27,13 +27,13 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link to="/" className="font-extrabold text-2xl md:text-3xl bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 dark:from-dark-primary dark:via-dark-secondary dark:to-blue-500 bg-clip-text text-transparent tracking-tight">
-            Faces
+            SlavesOnline
           </Link>
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/produkty" className="text-gray-600 hover:text-blue-600 dark:text-dark-on-surface dark:hover:text-dark-primary transition-colors duration-200">Fotky</Link>
+            <Link to="/products" className="text-gray-600 hover:text-blue-600 dark:text-dark-on-surface dark:hover:text-dark-primary transition-colors duration-200">Fotky</Link>
           </nav>
           <div className="flex items-center space-x-4">
-            <Link to="/kosik" className="p-2 text-gray-600 hover:text-blue-600 dark:text-dark-on-surface dark:hover:text-dark-primary transition-colors duration-200 relative">
+            <Link to="/cart" className="p-2 text-gray-600 hover:text-blue-600 dark:text-dark-on-surface dark:hover:text-dark-primary transition-colors duration-200 relative">
               <ShoppingCart size={20} />
               {totalItems > 0 && (
                 <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center dark:bg-dark-primary dark:text-dark-on-primary">{totalItems}</span>
@@ -51,7 +51,7 @@ const Header: React.FC = () => {
         <div className="md:hidden bg-gray-100 border-t border-gray-200 dark:bg-dark-surface dark:border-dark-border animate-fadeIn">
           <div className="container mx-auto px-4 py-4">
             <nav className="flex flex-col space-y-4">
-              <Link to="/produkty" className="text-gray-600 hover:text-blue-600 dark:text-dark-on-surface dark:hover:text-dark-primary transition-colors duration-200 py-2">Fotky</Link>
+              <Link to="/products" className="text-gray-600 hover:text-blue-600 dark:text-dark-on-surface dark:hover:text-dark-primary transition-colors duration-200 py-2">Fotky</Link>
             </nav>
           </div>
         </div>

@@ -13,7 +13,7 @@ const Cart: React.FC = () => {
         <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-dark-on-background">Váš košík</h1>
         <p className="mb-8 text-gray-600 dark:text-dark-text-medium">Váš košík je prázdný.</p>
         <Link
-          to="/produkty"
+          to="/products"
           className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold inline-flex items-center transition-colors duration-300 dark:bg-dark-primary dark:hover:bg-dark-primary-dark dark:text-dark-on-primary"
         >
           <ArrowLeft size={16} className="mr-2" />
@@ -95,7 +95,7 @@ const Cart: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
             <button
-              onClick={() => navigate('/produkty')}
+              onClick={() => navigate('/products')}
               className="bg-white border border-gray-200 hover:bg-gray-100 text-gray-700 py-2 px-4 rounded-lg font-medium inline-flex items-center justify-center transition-colors duration-300 dark:bg-dark-background dark:border-dark-border dark:hover:bg-dark-hover dark:text-dark-text-light"
             >
               <ArrowLeft size={16} className="mr-2" />
@@ -130,7 +130,7 @@ const Cart: React.FC = () => {
             </div>
             
             <button
-              onClick={() => navigate('/pokladna')}
+              onClick={() => navigate('/checkout')}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold flex items-center justify-center transition-colors duration-300 dark:bg-dark-primary dark:hover:bg-dark-primary-dark dark:text-dark-on-primary"
             >
               Pokračovat k platbě

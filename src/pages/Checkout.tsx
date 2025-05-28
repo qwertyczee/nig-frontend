@@ -50,7 +50,7 @@ const Checkout: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   if (cartItems.length === 0) {
-    navigate('/produkty');
+    navigate('/products');
     return null;
   }
 

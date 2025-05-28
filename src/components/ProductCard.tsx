@@ -20,7 +20,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <Link 
-      to={`/produkt/${product.id}`}
+      to={`/product/${product.id}`}
       className="group bg-white rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden flex flex-col h-full border border-gray-200 dark:bg-dark-surface dark:shadow-lg dark:hover:shadow-2xl dark:border-dark-border"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-dark-background">

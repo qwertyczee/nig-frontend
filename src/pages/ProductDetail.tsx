@@ -64,7 +64,7 @@ const ProductDetail: React.FC = () => {
             : 'Došlo k chybě při načítání informací o díle.'}
         </p>
         <button
-          onClick={() => navigate('/produkty')}
+          onClick={() => navigate('/products')}
           className="text-blue-600 flex items-center mx-auto hover:text-blue-700 dark:text-dark-primary dark:hover:text-dark-primary-dark transition-colors"
         >
           <ArrowLeft size={16} className="mr-2" /> Zpět na seznam děl
@@ -78,7 +78,7 @@ const ProductDetail: React.FC = () => {
       for (let i = 0; i < quantity; i++) {
         addToCart(product);
       }
-      navigate('/kosik');
+      navigate('/cart');
     }
   };
 
@@ -95,7 +95,7 @@ const ProductDetail: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-12 bg-white text-gray-900 dark:bg-dark-background dark:text-dark-on-background">
       <button
-        onClick={() => navigate('/produkty')}
+        onClick={() => navigate('/products')}
         className="text-blue-600 flex items-center mb-8 hover:text-blue-700 dark:text-dark-primary dark:hover:text-dark-primary-dark transition-colors duration-200"
       >
         <ArrowLeft size={16} className="mr-2" /> Zpět na seznam děl

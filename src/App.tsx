@@ -18,10 +18,10 @@ function App() {
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/produkty" element={<Products />} />
-              <Route path="/produkt/:id" element={<ProductDetail />} />
-              <Route path="/kosik" element={<Cart />} />
-              <Route path="/pokladna" element={<Checkout />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout" element={<Checkout />} />
               <Route path="/order/success" element={<OrderSuccess />} /> {/* Add this line */}
             </Routes>
           </main>
