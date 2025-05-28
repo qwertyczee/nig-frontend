@@ -3,12 +3,29 @@ import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import { fetchProducts } from '../services/api';
 import { Product } from '../types';
-import { ArrowRight, CheckCircle, Clock, Award, Loader2, AlertTriangle } from 'lucide-react';
+import { 
+  ArrowRight, 
+  CheckCircle,
+  Award, 
+  Loader2, 
+  AlertTriangle,
+  Camera,
+  Download,
+  Shield,
+  Users,
+  Eye,
+  Search,
+  Grid,
+  List
+} from 'lucide-react';
 
 const Home: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -27,117 +44,260 @@ const Home: React.FC = () => {
     loadProducts();
   }, []);
 
+  const stats = [
+    { icon: Camera, label: 'Professional Photos', value: '10,000+' },
+    { icon: Users, label: 'Happy Customers', value: '5,000+' },
+    { icon: Award, label: 'Award Winning', value: '50+' },
+    { icon: Download, label: 'Instant Downloads', value: '24/7' }
+  ];
+
+  const categories = ['all', 'Portrait', 'Urban', 'Nature', 'Abstract', 'Fashion', 'Architecture'];
+
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        product.description.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  const featuredProducts = products.slice(0, 3);
+
   return (
-    <div>
+    <div className="min-h-screen dark:bg-background dark:text-on-background">
       {/* Hero Section */}
-      <section className="relative h-[80vh] max-h-[700px] flex items-center justify-center text-center bg-gradient-to-r from-blue-500 to-blue-700 dark:from-dark-primary dark:to-dark-secondary overflow-hidden">
-        <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'url("https://source.unsplash.com/random/1600x900?abstract,art")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
-        <div className="container mx-auto px-4 z-10 text-white">
-          <div className="max-w-3xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-extrabold mb-6 leading-tight drop-shadow-lg">
-              Objevte Svět Digitálního Umění
-            </h1>
-            <p className="text-xl md:text-2xl mb-10 opacity-90">
-              Prozkoumejte naši exkluzivní kolekci digitálních portrétů a najděte inspiraci pro vaše projekty.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                to="/produkty"
-                className="bg-white text-blue-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-lg transform hover:scale-105"
-              >
-                Prohlédnout celou galerii <ArrowRight size={20} className="inline-block ml-2" />
-              </Link>
-              <Link
-                to="#jak"
-                className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-blue-600 transition-all duration-300 shadow-lg transform hover:scale-105"
-              >
-                Jak to funguje?
-              </Link>
-            </div>
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.pexels.com/photos/1323712/pexels-photo-1323712.jpeg"
+            alt="Hero Background"
+            className="w-full h-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 dark:bg-gradient-to-r dark:from-background dark:via-background/80 dark:to-transparent"></div>
+        </div>
+        
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
+          <h1 className="text-6xl md:text-8xl font-bold mb-6 dark:bg-gradient-to-r dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent">
+            Digital Art Photography
+          </h1>
+          <p className="text-xl md:text-2xl dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+            Discover stunning digital art and photography from talented artists worldwide. 
+            High-quality, instant downloads for your creative projects.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/products"
+              className="dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 dark:hover:from-blue-700 dark:hover:to-purple-700 dark:text-on-secondary px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
+            >
+              Explore Gallery <ArrowRight size={20} />
+            </Link>
+            <button className="border-2 dark:border-gray-400 dark:hover:border-gray-300 dark:text-gray-300 dark:hover:text-on-secondary px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300">
+              Learn More
+            </button>
           </div>
+        </div>
+
+        {/* Age Verification Notice */}
+        <div className="absolute bottom-8 left-8 dark:bg-red-600/20 dark:border dark:border-red-500 rounded-lg p-4 max-w-sm">
+          <div className="flex items-center gap-2 dark:text-red-400 mb-2">
+            <Shield size={20} />
+            <span className="font-semibold">18+ Content Available</span>
+          </div>
+          <p className="text-sm dark:text-gray-300">
+            Some content may be suitable for mature audiences only. Age verification required.
+          </p>
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="py-20 bg-gray-50 dark:bg-dark-surface">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-extrabold text-center mb-16 text-gray-800 dark:text-dark-on-surface">Proč si vybrat Faces?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div className="bg-white p-8 rounded-2xl shadow-xl flex flex-col items-center text-center border border-gray-200 dark:bg-dark-background dark:border-dark-border transform hover:scale-105 transition-transform duration-300">
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-full mb-6 shadow-md dark:from-dark-primary dark:to-dark-secondary">
-                <CheckCircle className="text-white dark:text-dark-on-primary" size={32} />
+      {/* Stats Section */}
+      <section className="py-16 dark:bg-gray-800">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 rounded-full mb-4">
+                  <stat.icon size={32} className="dark:text-on-secondary" />
+                </div>
+                <div className="text-3xl font-bold dark:text-on-secondary mb-2">{stat.value}</div>
+                <div className="dark:text-gray-400">{stat.label}</div>
               </div>
-              <h3 className="text-2xl font-bold mb-3 text-gray-800 dark:text-dark-on-surface">Široká Rozmanitost</h3>
-              <p className="text-gray-600 dark:text-dark-text-medium leading-relaxed">Nabízíme tváře všech etnik, věků a stylů, včetně exkluzivní 18+ sekce. Ideální pro jakýkoli projekt.</p>
-            </div>
-            <div className="bg-white p-8 rounded-2xl shadow-xl flex flex-col items-center text-center border border-gray-200 dark:bg-dark-background dark:border-dark-border transform hover:scale-105 transition-transform duration-300">
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-full mb-6 shadow-md dark:from-dark-primary dark:to-dark-secondary">
-                <Award className="text-white dark:text-dark-on-primary" size={32} />
-              </div>
-              <h3 className="text-2xl font-bold mb-3 text-gray-800 dark:text-dark-on-surface">100% Originalita</h3>
-              <p className="text-gray-600 dark:text-dark-text-medium leading-relaxed">Každé digitální dílo je unikátní, vytvořené s precizností a důrazem na nejvyšší kvalitu a detail.</p>
-            </div>
-            <div className="bg-white p-8 rounded-2xl shadow-xl flex flex-col items-center text-center border border-gray-200 dark:bg-dark-background dark:border-dark-border transform hover:scale-105 transition-transform duration-300">
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-full mb-6 shadow-md dark:from-dark-primary dark:to-dark-secondary">
-                <Clock className="text-white dark:text-dark-on-primary" size={32} />
-              </div>
-              <h3 className="text-2xl font-bold mb-3 text-gray-800 dark:text-dark-on-surface">Okamžité Stažení</h3>
-              <p className="text-gray-600 dark:text-dark-text-medium leading-relaxed">Získejte přístup k zakoupeným fotkám ihned po zaplacení. Rychle, bezpečně a bez čekání.</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Featured Products */}
-      <section className="py-20 bg-white dark:bg-dark-background">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-12">
-            <h2 className="text-4xl font-extrabold text-gray-800 dark:text-dark-on-background">Nejnovější díla</h2>
-            <Link
-              to="/produkty"
-              className="text-blue-600 font-bold text-lg flex items-center hover:text-blue-700 dark:text-dark-primary dark:hover:text-dark-primary-dark transition-colors duration-200"
-            >
-              Zobrazit celou kolekci <ArrowRight size={20} className="ml-2" />
-            </Link>
+      <section className="py-20 dark:bg-background">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Featured Artwork</h2>
+            <p className="text-xl dark:text-gray-400 max-w-2xl mx-auto">
+              Handpicked masterpieces from our most talented photographers and digital artists
+            </p>
           </div>
 
           {isLoading ? (
-            <div className="flex justify-center items-center min-h-[300px]">
-              <Loader2 size={48} className="animate-spin text-blue-600 dark:text-dark-primary" />
-              <p className="ml-4 text-xl text-gray-600 dark:text-dark-text-medium">Načítání děl...</p>
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="animate-spin dark:text-blue-500" size={48} />
             </div>
           ) : error ? (
-            <div className="text-center text-red-600 dark:text-dark-error py-10">
-              <AlertTriangle size={48} className="mx-auto mb-4" />
-              <p className="text-xl">{error}</p>
+            <div className="text-center py-20">
+              <AlertTriangle className="mx-auto dark:text-red-500 mb-4" size={48} />
+              <p className="dark:text-red-400 text-lg">{error}</p>
             </div>
-          ) : products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {products.slice(0, 8).map(product => (
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
-          ) : (
-            <div className="text-center text-gray-600 dark:text-dark-text-medium py-10">
-              <p className="text-xl">Žádná díla k zobrazení.</p>
+          )}
+
+          <div className="text-center mt-12">
+            <Link
+              to="/products"
+              className="inline-flex items-center gap-2 dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 dark:hover:from-blue-700 dark:hover:to-purple-700 dark:text-on-secondary px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105"
+            >
+              View All Artwork <ArrowRight size={20} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Categories Section */}
+      <section className="py-20 dark:bg-gray-800">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Browse Categories</h2>
+            <p className="text-xl dark:text-gray-400">Find the perfect style for your project</p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                  selectedCategory === category
+                    ? 'dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 dark:text-on-secondary'
+                    : 'dark:bg-gray-700 dark:text-gray-300 hover:dark:bg-gray-600'
+                }`}
+              >
+                {category === 'all' ? 'All' : category}
+              </button>
+            ))}
+          </div>
+
+          {/* Search and View Controls */}
+          <div className="flex flex-col md:flex-row gap-4 mb-8">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 dark:text-gray-400" size={20} />
+              <input
+                type="text"
+                placeholder="Search artwork..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 dark:bg-gray-700 dark:border dark:border-gray-600 rounded-lg dark:text-on-secondary dark:placeholder-gray-400 focus:outline-none focus:ring-2 dark:focus:ring-blue-500"
+              />
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-3 rounded-lg transition-colors ${
+                  viewMode === 'grid' ? 'dark:bg-blue-600 dark:text-on-secondary' : 'dark:bg-gray-700 dark:text-gray-400 hover:dark:bg-gray-600'
+                }`}
+              >
+                <Grid size={20} />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-3 rounded-lg transition-colors ${
+                  viewMode === 'list' ? 'dark:bg-blue-600 dark:text-on-secondary' : 'dark:bg-gray-700 dark:text-gray-400 hover:dark:bg-gray-600'
+                }`}
+              >
+                <List size={20} />
+              </button>
+            </div>
+          </div>
+
+          {/* Products Grid */}
+          <div className={`grid gap-8 ${
+            viewMode === 'grid' 
+              ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' 
+              : 'grid-cols-1'
+          }`}>
+            {filteredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+
+          {filteredProducts.length === 0 && !isLoading && (
+            <div className="text-center py-20">
+              <Eye className="mx-auto dark:text-gray-500 mb-4" size={48} />
+              <p className="dark:text-gray-400 text-lg">No artwork found matching your criteria</p>
             </div>
           )}
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="bg-blue-600 text-white py-20 dark:bg-dark-primary dark:text-dark-on-primary">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-extrabold mb-6">Máte speciální požadavek?</h2>
-          <p className="text-xl mb-10 max-w-3xl mx-auto opacity-90">
-            Pokud potřebujete něco na míru, neváhejte nás kontaktovat. Rádi vám pomůžeme s vaším projektem.
+      {/* Features Section */}
+      <section className="py-20 dark:bg-background">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Why Choose Us</h2>
+            <p className="text-xl dark:text-gray-400">Premium digital art with unmatched quality and service</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="dark:bg-gray-800 p-8 rounded-xl dark:border dark:border-gray-700 dark:hover:border-blue-500 transition-colors">
+              <div className="w-16 h-16 dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 rounded-lg flex items-center justify-center mb-6">
+                <Download size={32} className="dark:text-on-secondary" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Instant Downloads</h3>
+              <p className="dark:text-gray-400">
+                Get your purchased artwork immediately after payment. High-resolution files ready for use.
+              </p>
+            </div>
+
+            <div className="dark:bg-gray-800 p-8 rounded-xl dark:border dark:border-gray-700 dark:hover:border-blue-500 transition-colors">
+              <div className="w-16 h-16 dark:bg-gradient-to-r dark:from-green-600 dark:to-blue-600 rounded-lg flex items-center justify-center mb-6">
+                <CheckCircle size={32} className="dark:text-on-secondary" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Quality Guaranteed</h3>
+              <p className="dark:text-gray-400">
+                Every piece is carefully curated and meets our high standards for artistic excellence.
+              </p>
+            </div>
+
+            <div className="dark:bg-gray-800 p-8 rounded-xl dark:border dark:border-gray-700 dark:hover:border-blue-500 transition-colors">
+              <div className="w-16 h-16 dark:bg-gradient-to-r dark:from-purple-600 dark:to-pink-600 rounded-lg flex items-center justify-center mb-6">
+                <Shield size={32} className="dark:text-on-secondary" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Secure & Private</h3>
+              <p className="dark:text-gray-400">
+                Your purchases and personal information are protected with enterprise-grade security.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-20 dark:bg-gradient-to-r dark:from-blue-900 dark:to-purple-900">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">Stay Inspired</h2>
+          <p className="text-xl dark:text-gray-300 mb-8">
+            Get notified about new artwork, exclusive collections, and special offers
           </p>
-          <Link
-            to="#"
-            className="bg-white text-blue-600 px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 hover:text-blue-700 transition-colors duration-300 inline-block shadow-lg transform hover:scale-105"
-          >
-            Kontaktujte nás
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="flex-1 px-6 py-4 rounded-lg dark:bg-on-secondary/10 dark:border dark:border-on-secondary/20 dark:text-on-secondary dark:placeholder-gray-300 focus:outline-none focus:ring-2 dark:focus:ring-on-secondary/50"
+            />
+            <button className="dark:bg-on-secondary dark:text-background px-8 py-4 rounded-lg font-semibold dark:hover:bg-gray-100 transition-colors">
+              Subscribe
+            </button>
+          </div>
         </div>
       </section>
     </div>
