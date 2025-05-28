@@ -42,7 +42,7 @@
 
 @layer base {
     body {
-        @apply bg-on-secondary text-gray-900;
+        @apply bg-white text-gray-900;
         html.dark & {
             @apply bg-dark-background text-dark-on-background;
         }

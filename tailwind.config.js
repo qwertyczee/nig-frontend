@@ -57,6 +57,8 @@ export default {
       'green': {
         600: '#059669',
       },
+      'white': '#ffffff',
+      'black': '#000',
     },
     extend: {
       animation: {
@@ -67,6 +69,55 @@ export default {
           '0%': { opacity: 0 },
           '100%': { opacity: 1 },
         }
+      },
+      colors: {
+        'dark-background': '#121212',
+        'dark-surface': '#1E1E1E',
+        'dark-primary': '#3B82F6',
+        'dark-primary-dark': '#2563EB',
+        'dark-secondary': '#047857',
+        'dark-error': '#CF6679',
+        'dark-on-primary': '#FFFFFF',
+        'dark-on-secondary': '#FFFFFF',
+        'dark-on-background': '#E0E0E0',
+        'dark-on-surface': '#E0E0E0',
+        'dark-on-error': '#000000',
+        'dark-gray': {
+          100: '#F3F4F6',
+          200: '#E5E7EB',
+          300: '#D1D5DB',
+          400: '#9CA3AF',
+          500: '#6B7280',
+          600: '#4B5563',
+          700: '#374151',
+          800: '#1F2937',
+          900: '#111827',
+        },
+        'dark-blue': {
+          400: '#60A5FA',
+          500: '#3B82F6',
+          600: '#2563EB',
+          700: '#1D4ED8',
+          900: '#1E3A8A',
+        },
+        'dark-purple': {
+          500: '#A855F7',
+          600: '#9333EA',
+          700: '#7E22CE',
+          900: '#581C87',
+        },
+        'dark-pink': {
+          500: '#EC4899',
+          600: '#DB2777',
+        },
+        'dark-red': {
+          400: '#F87171',
+          500: '#EF4444',
+          600: '#DC2626',
+        },
+        'dark-green': {
+          600: '#059669',
+        },
       },
     },
   },
