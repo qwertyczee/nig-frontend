@@ -63,7 +63,4 @@ export interface Order {
   billing_address?: ShippingAddress;
   created_at: string; // ISO date string
   updated_at: string; // ISO date string
-  payment_provider?: string;
-  payment_intent_id?: string; // Or polar_session_id
-  // Add other fields your backend returns for an order
 }
