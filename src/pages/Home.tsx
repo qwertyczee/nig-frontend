@@ -200,26 +200,6 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Newsletter Section */}
-      <section className="py-20 dark:bg-gradient-to-r dark:from-blue-900 dark:to-purple-900">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">Stay Inspired</h2>
-          <p className="text-xl dark:text-gray-300 mb-8">
-            Get notified about new artwork, exclusive collections, and special offers
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-6 py-4 rounded-lg dark:bg-on-secondary/10 dark:border dark:border-on-secondary/20 dark:text-on-secondary dark:placeholder-gray-300 focus:outline-none focus:ring-2 dark:focus:ring-on-secondary/50"
-            />
-            <Button className="dark:bg-on-secondary dark:text-background px-8 py-4 rounded-lg font-semibold dark:hover:bg-gray-100 transition-colors">
-              Subscribe
-            </Button>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
