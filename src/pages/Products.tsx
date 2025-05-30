@@ -5,6 +5,7 @@ import { fetchProducts } from '@/services/api';
 import { Filter, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useSearchParams } from 'react-router-dom';
 
 const Products: React.FC = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -15,6 +16,10 @@ const Products: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category');
+  const typeParam = searchParams.get('type');
+
   useEffect(() => {
     const loadProducts = async () => {
       setIsLoading(true);
@@ -22,7 +27,7 @@ const Products: React.FC = () => {
       try {
         const data = await fetchProducts();
         setAllProducts(data);
-        setFilteredProducts(data); // Initially show all products
+        setFilteredProducts(data);
       } catch (err: unknown) {
         setError((err as Error).message || 'Nepodařilo se načíst fotky.');
         console.error(err);
@@ -36,17 +41,27 @@ const Products: React.FC = () => {
   const categories = [...new Set(allProducts.map(product => product.category).filter(Boolean))] as string[];
 
   useEffect(() => {
-    const productsToProcess = selectedCategory
-      ? allProducts.filter(product => product.category === selectedCategory)
-      : allProducts;
+    let productsToProcess = [...allProducts];
 
-    const sorted = [...productsToProcess].sort((a, b) => {
+    if (typeParam === 'nsfw') {
+      productsToProcess = productsToProcess.filter(product => product.is_18_plus === true);
+    } else if (typeParam === 'nonsfw') {
+      productsToProcess = productsToProcess.filter(product => product.is_18_plus === false);
+    }
+
+    if (categoryParam && categoryParam !== 'all') {
+      productsToProcess = productsToProcess.filter(product => product.category === categoryParam);
+    }
+
+    const sorted = productsToProcess.sort((a, b) => {
       if (sortBy === 'price-asc') return a.price - b.price;
       if (sortBy === 'price-desc') return b.price - a.price;
-      return 0; // For 'default', maintain original fetched order or sort by ID/name if needed
+      return 0;
     });
+
     setFilteredProducts(sorted);
-  }, [selectedCategory, sortBy, allProducts]);
+    setSelectedCategory(categoryParam || null);
+  }, [allProducts, categoryParam, typeParam, sortBy]);
 
   if (isLoading) {
     return (
@@ -82,19 +97,36 @@ const Products: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-dark-background text-dark-on-background">
+    <div className="container mx-auto px-6 py-8 bg-dark-background text-dark-on-background">
       <h1 className="text-4xl font-extrabold mb-4 text-dark-on-background text-center">Naše exkluzivní fotky</h1>
       <p className="text-lg text-dark-text-medium mb-10 text-center max-w-2xl mx-auto">
         Prohlédněte si naši rozmanitou nabídku profesionálních fotek, pečlivě vybraných pro vaši inspiraci a potřeby.
       </p>
 
-      <Button
-        className="md:hidden flex items-center justify-center w-full py-3 px-4 mb-6 bg-dark-primary text-dark-on-primary rounded-lg shadow hover:bg-dark-primary-dark transition-colors duration-200"
-        onClick={() => setShowFilters(!showFilters)}
-      >
-        <Filter size={20} className="mr-2" />
-        {showFilters ? 'Skrýt filtry a řazení' : 'Zobrazit filtry a řazení'}
-      </Button>
+      <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <Button
+          className="md:hidden flex items-center justify-center w-full py-3 px-4 bg-dark-primary text-dark-on-primary rounded-lg shadow hover:bg-dark-primary-dark transition-colors duration-200"
+          onClick={() => setShowFilters(!showFilters)}
+        >
+          <Filter size={20} className="mr-2" />
+          {showFilters ? 'Skrýt filtry a řazení' : 'Zobrazit filtry a řazení'}
+        </Button>
+        <Button
+          className={`flex items-center justify-center w-full md:w-auto py-3 px-4 rounded-lg shadow transition-colors duration-200 ${typeParam === 'nsfw' ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-dark-surface text-dark-text-light hover:bg-dark-hover'}`}
+          onClick={() => {
+            const newSearchParams = new URLSearchParams(searchParams);
+            if (typeParam === 'nsfw') {
+              newSearchParams.delete('type');
+            } else {
+              newSearchParams.set('type', 'nsfw');
+              newSearchParams.delete('category');
+            }
+            setSearchParams(newSearchParams);
+          }}
+        >
+          {typeParam === 'nsfw' ? 'Zrušit 18+ filtr' : '18+ Obsah'}
+        </Button>
+      </div>
 
       <div className="flex flex-col md:flex-row gap-8">
         <aside className={`md:w-1/4 lg:w-1/5 ${showFilters ? 'block' : 'hidden'} md:block`}>
@@ -108,33 +140,33 @@ const Products: React.FC = () => {
                     ? 'bg-blue-600 text-white shadow-md dark:bg-dark-primary dark:text-dark-on-primary'
                     : 'text-dark-text-light hover:bg-dark-hover'}
                 `}
-                onClick={() => setSelectedCategory(null)}
+                onClick={() => {
+                    const newSearchParams = new URLSearchParams(searchParams);
+                    newSearchParams.delete('category');
+                    newSearchParams.delete('type');
+                    setSearchParams(newSearchParams);
+                }}
               >
                 Všechny fotky
               </Button>
 
-              {categories.map(category => (
+              {categories.filter(cat => cat !== '18+').map(category => (
                 <Button
                   key={category}
                   className={`block w-full text-left py-2.5 px-4 rounded-lg transition-colors duration-200 ${selectedCategory === category
                       ? 'bg-blue-600 text-white shadow-md dark:bg-dark-primary dark:text-dark-on-primary'
                       : 'text-dark-text-light hover:bg-dark-hover'}
                   `}
-                  onClick={() => setSelectedCategory(category)}
+                  onClick={() => {
+                      const newSearchParams = new URLSearchParams(searchParams);
+                      newSearchParams.set('category', category);
+                      newSearchParams.delete('type');
+                      setSearchParams(newSearchParams);
+                  }}
                 >
                   {category.charAt(0).toUpperCase() + category.slice(1)}
                 </Button>
               ))}
-              {/* Add 18+ category */}
-              <Button
-                className={`block w-full text-left py-2.5 px-4 rounded-lg transition-colors duration-200 ${selectedCategory === '18+'
-                    ? 'bg-blue-600 text-white shadow-md dark:bg-dark-primary dark:text-dark-on-primary'
-                    : 'text-dark-text-light hover:bg-dark-hover'}
-                `}
-                onClick={() => setSelectedCategory('18+')}
-              >
-                18+ Obsah
-              </Button>
             </CardContent>
           </Card>
 
@@ -175,6 +207,27 @@ const Products: React.FC = () => {
         </aside>
 
         <div className="md:w-3/4 lg:w-4/5">
+          {selectedCategory && selectedCategory !== '18+' && !typeParam && (
+            <p className="text-lg text-dark-text-medium mb-4">
+              Zobrazená kategorie: <span className="font-semibold text-dark-on-background">{selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}</span>
+            </p>
+          )}
+          {typeParam === 'nsfw' && (
+            <p className="text-lg text-dark-text-medium mb-4">
+              Zobrazený obsah: <span className="font-semibold text-red-500">18+ Obsah</span>
+            </p>
+          )}
+          {typeParam === 'nonsfw' && (
+            <p className="text-lg text-dark-text-medium mb-4">
+              Zobrazený obsah: <span className="font-semibold text-dark-on-background">Obsah bez 18+</span>
+            </p>
+          )}
+          {!selectedCategory && !typeParam && (
+            <p className="text-lg text-dark-text-medium mb-4">
+              Zobrazeno: <span className="font-semibold text-dark-on-background">Všechny fotky</span>
+            </p>
+          )}
+
           {filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map(product => (

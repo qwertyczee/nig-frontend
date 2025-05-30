@@ -45,7 +45,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <CardContent className="p-4 flex-grow flex flex-col">
           <h3 className="text-xl font-extrabold text-dark-on-surface mb-2 truncate" title={product.name}>{product.name}</h3>
           <div className="flex items-center justify-between mt-auto pt-4 border-t border-dark-border">
-            <span className="text-2xl font-bold bg-gradient-to-r from-dark-primary to-dark-secondary bg-clip-text text-transparent">{product.price.toLocaleString('cs-CZ')} Kč</span>
+            <span className="text-ml font-bold bg-gradient-to-r from-dark-primary to-dark-secondary bg-clip-text text-transparent">{product.price.toLocaleString('cs-CZ')} Kč</span>
             <Button
               onClick={handleAddToCart}
               className="px-4 py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-dark-primary focus:ring-opacity-50 flex items-center space-x-2 bg-dark-primary hover:bg-dark-primary-dark text-dark-on-primary"
