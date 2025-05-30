@@ -38,7 +38,14 @@ const Products: React.FC = () => {
     loadProducts();
   }, []);
 
-  const categories = [...new Set(allProducts.map(product => product.category).filter(Boolean))] as string[];
+  const categories = [...new Set(allProducts.flatMap(product => {
+    if (Array.isArray(product.category)) {
+        return product.category;
+    } else if (typeof product.category === 'string' && product.category) {
+        return [product.category];
+    }
+    return [];
+  }).filter(Boolean))] as string[];
 
   useEffect(() => {
     let productsToProcess = [...allProducts];
