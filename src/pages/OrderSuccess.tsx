@@ -80,9 +80,9 @@ const OrderSuccess: React.FC = () => {
           <p className="text-lg mb-2 text-dark-text-light">Děkujeme za vaši objednávku.</p>
           
           {customerSessionToken && !loading && !error && !orderDetails && (
-             <p className="text-md mb-4 text-dark-text-medium">
-               Načítání detailů objednávky pro token: <span className="font-semibold">{customerSessionToken}</span>
-             </p>
+            <p className="text-md mb-4 text-dark-text-medium">
+              Načítání detailů objednávky pro token: <span className="font-semibold">{customerSessionToken}</span>
+            </p>
           )}
 
           {loading && <p className="text-lg text-dark-primary">Načítání detailů objednávky...</p>}
