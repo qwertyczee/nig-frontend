@@ -31,8 +31,8 @@ const Header: React.FC = () => {
             SlavesOnline
           </Link>
           <nav className="hidden md:flex items-center space-x-8 text-dark-on-surface">
-            <Link to="/products" className="hover:text-dark-primary transition-colors duration-200">Shop All</Link>
-            <Link to="/products?category=black" className="hover:text-dark-primary transition-colors duration-200">Black</Link>
+            <Link to="/products" className="hover:text-dark-primary transition-colors duration-200">Vše</Link>
+            <Link to="/products?category=černí" className="hover:text-dark-primary transition-colors duration-200">Černí</Link>
           </nav>
           <div className="flex items-center space-x-4">
             <Link to="/cart" className="p-2 text-dark-on-surface hover:text-dark-primary transition-colors duration-200 relative">

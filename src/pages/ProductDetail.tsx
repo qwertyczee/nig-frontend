@@ -3,10 +3,23 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '@/context/CartContext';
 import { Product } from '@/types';
 import { fetchProductById } from '@/services/api';
-import { ArrowLeft, ShoppingCart, MinusCircle, PlusCircle, Loader2, AlertTriangle, Star } from 'lucide-react';
+import { 
+  ArrowLeft, 
+  ShoppingCart, 
+  MinusCircle, 
+  PlusCircle, 
+  Loader2, 
+  AlertTriangle, 
+  Download,
+  Shield,
+  Image as ImageIcon,
+  ChevronRight,
+  Check,
+  Info
+} from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +29,7 @@ const ProductDetail: React.FC = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string>('');
 
   useEffect(() => {
     if (!id) {
@@ -29,6 +43,7 @@ const ProductDetail: React.FC = () => {
       try {
         const data = await fetchProductById(id);
         setProduct(data);
+        setSelectedImage(data.main_image_url || '');
       } catch (err: unknown) {
         if (err instanceof Error) {
           if (err.message === 'Product not found') {
@@ -49,29 +64,34 @@ const ProductDetail: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-16 flex justify-center items-center min-h-[60vh] bg-dark-background text-dark-on-background">
-        <Loader2 size={48} className="animate-spin text-blue-600 dark:text-dark-primary" />
-        <p className="ml-4 text-lg text-dark-text-light">Načítání detailu díla...</p>
+      <div className="min-h-screen dark:bg-background flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 size={48} className="animate-spin dark:text-blue-500 mx-auto mb-4" />
+          <p className="text-lg dark:text-gray-300">Načítání detailu díla...</p>
+        </div>
       </div>
     );
   }
 
   if (error || !product) {
     return (
-      <div className="container mx-auto px-4 py-16 text-center bg-dark-background text-dark-on-background">
-        <AlertTriangle size={48} className="mx-auto text-red-600 dark:text-dark-error mb-4" />
-        <h2 className="text-2xl font-bold mb-4 text-dark-error">{error || 'Dílo nenalezeno'}</h2>
-        <p className="mb-8 text-gray-600 dark:text-dark-text-medium">
-          {error === 'Produkt nenalezen'
-            ? 'Omlouváme se, ale hledané dílo neexistuje nebo bylo odstraněno.'
-            : 'Došlo k chybě při načítání informací o díle.'}
-        </p>
-        <button
-          onClick={() => navigate('/products')}
-          className="text-blue-600 flex items-center mx-auto hover:text-blue-700 dark:text-dark-primary dark:hover:text-dark-primary-dark transition-colors"
-        >
-          <ArrowLeft size={16} className="mr-2" /> Zpět na seznam děl
-        </button>
+      <div className="min-h-screen dark:bg-background flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-6">
+          <AlertTriangle size={64} className="mx-auto dark:text-red-400 mb-6" />
+          <h2 className="text-3xl font-bold mb-4 dark:text-white">{error || 'Dílo nenalezeno'}</h2>
+          <p className="mb-8 dark:text-gray-300 leading-relaxed">
+            {error === 'Produkt nenalezen'
+              ? 'Omlouváme se, ale hledané dílo neexistuje nebo bylo odstraněno.'
+              : 'Došlo k chybě při načítání informací o díle.'}
+          </p>
+          <Button
+            onClick={() => navigate('/products')}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft size={16} /> Zpět na galerii
+          </Button>
+        </div>
       </div>
     );
   }
@@ -95,156 +115,254 @@ const ProductDetail: React.FC = () => {
     setQuantity(quantity + 1);
   };
 
+  const allImages = [
+    product.main_image_url,
+    ...(product.sub_image_urls || [])
+  ].filter(Boolean);
+
+  const features = [
+    { icon: Download, text: 'Okamžité stažení po nákupu' },
+    { icon: ImageIcon, text: 'Vysoké rozlišení' },
+    { icon: Shield, text: 'Komerční licence zahrnuta' },
+  ];
+
   return (
-    <div className="container mx-auto px-4 py-12 bg-dark-background text-dark-on-background">
-      <div className="text-sm text-dark-text-light mb-6">
-        <span className="hover:underline cursor-pointer" onClick={() => navigate('/')}>Home</span>{' '}
-        {'/'}{' '}
-        {product.category && (
-          <>
-            <span className="hover:underline cursor-pointer" onClick={() => navigate(`/products?category=${product.category}`)}>{product.category}</span>{' '}
-            {'/'}{' '}
-          </>
-        )}
-        <span className="text-dark-on-surface font-semibold">{product.name}</span>
+    <div className="min-h-screen dark:bg-background dark:text-white">
+      {/* Breadcrumbs */}
+      <div className="dark:bg-gray-900/50 py-4">
+        <div className="max-w-7xl mx-auto px-6">
+          <nav className="flex items-center space-x-2 text-sm dark:text-gray-300">
+            <button
+              onClick={() => navigate('/')}
+              className="hover:text-blue-400 transition-colors"
+            >
+              Domů
+            </button>
+            <ChevronRight size={16} />
+            <button
+              onClick={() => navigate('/products')}
+              className="hover:text-blue-400 transition-colors"
+            >
+              Galerie
+            </button>
+            {product.category && (
+              <>
+                <ChevronRight size={16} />
+                <button
+                  onClick={() => navigate(`/products?category=${product.category}`)}
+                  className="hover:text-blue-400 transition-colors"
+                >
+                  {product.category}
+                </button>
+              </>
+            )}
+            <ChevronRight size={16} />
+            <span className="dark:text-white font-medium">{product.name}</span>
+          </nav>
+        </div>
       </div>
 
-      <Card className="rounded-lg shadow-sm overflow-hidden border dark:border-dark-border bg-dark-surface">
-        <div className="md:flex">
-          <div className="md:w-1/2">
-            <img
-              src={product.main_image_url || 'https://placehold.co/600x400.png?text=Image+not+available'}
-              alt={product.name}
-              className="w-full h-full object-cover aspect-[4/3] md:aspect-auto"
-            />
-            {product.sub_image_urls && product.sub_image_urls.length > 0 && (
-              <div className="mt-4 p-4 bg-dark-background/50 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800 dark:text-dark-on-surface">Další obrázky:</h3>
-                <div className="flex space-x-3 overflow-x-auto pb-2">
-                  {product.sub_image_urls.map((url, index) => (
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Image Section */}
+          <div className="space-y-6">
+            <div className="relative overflow-hidden rounded-2xl bg-gray-900">
+              <img
+                src={selectedImage || 'https://placehold.co/600x400.png?text=Image+not+available'}
+                alt={product.name}
+                className="w-full aspect-[4/3] object-contain"
+              />
+              {product.is_18_plus && (
+                <Badge className="absolute top-4 left-4 bg-red-600 text-white">
+                  18+
+                </Badge>
+              )}
+            </div>
+
+            {/* Thumbnail Gallery */}
+            {allImages.length > 1 && (
+              <div className="flex space-x-3 overflow-x-auto pb-2">
+                {allImages.map((url, index) => (
+                  <button
+                    key={index}
+                    onClick={() => { if (url) setSelectedImage(url); }}
+                    className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                      selectedImage === url
+                        ? 'border-blue-500 scale-105'
+                        : 'border-gray-600 hover:border-gray-400'
+                    }`}
+                  >
                     <img
-                      key={index}
                       src={url}
-                      alt={`${product.name} - Sub Image ${index + 1}`}
-                      className="w-24 h-24 object-cover rounded-md shadow-sm border dark:border-dark-border flex-shrink-0"
+                      alt={`${product.name} - náhled ${index + 1}`}
+                      className="w-full h-full object-contain"
                     />
-                  ))}
-                </div>
+                  </button>
+                ))}
               </div>
             )}
           </div>
-          
-          <div className="md:w-1/2 p-6 md:p-8">
-            <div className="flex justify-between items-start mb-4">
-              <h1 className="text-2xl md:text-3xl font-bold text-dark-on-surface">{product.name}</h1>
-            </div>
-            
-            <div className="mb-6 flex items-center">
-              <p className="text-3xl font-bold text-dark-primary mr-3">{product.price} Kč</p>
+
+          {/* Product Info Section */}
+          <div className="space-y-8">
+            <div>
+              <h1 className="text-4xl font-bold mb-4 dark:text-white">
+                {product.name}
+              </h1>
+              {product.category && (
+                <Badge variant="secondary" className="mb-4">
+                  {product.category}
+                </Badge>
+              )}
+              <div className="flex items-baseline gap-3 mb-6">
+                <span className="text-4xl font-bold dark:text-blue-400">
+                  {product.price} Kč
+                </span>
+              </div>
             </div>
 
-            <div className="flex items-center mb-6 text-dark-on-background">
-                <div className="flex items-center mr-4">
-                    <Star size={18} className="text-yellow-500 fill-current mr-1"/>
-                    <span className="font-semibold">4.8</span>
+            {/* Features */}
+            <div className="space-y-3">
+              {features.map((feature, index) => (
+                <div key={index} className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full dark:bg-green-600/20 flex items-center justify-center">
+                    <feature.icon size={16} className="dark:text-green-400" />
+                  </div>
+                  <span className="dark:text-gray-300">{feature.text}</span>
                 </div>
-                <span className="mr-4">67 Reviews</span>
-                <span>93% of buyers recommended this.</span>
+              ))}
             </div>
-            
-            <div className="mb-8">
-              <label htmlFor="quantity" className="block text-sm font-medium text-dark-text-light mb-2">
-                Počet
+
+            {/* Quantity Selector */}
+            <div className="space-y-3">
+              <label className="block text-sm font-medium dark:text-gray-300">
+                Počet licencí
               </label>
-              <div className="flex items-center">
+              <div className="flex items-center gap-4">
                 <Button
+                  variant="outline"
+                  size="sm"
                   onClick={decreaseQuantity}
-                  className="text-dark-text-medium hover:text-dark-primary transition-colors duration-200 p-1 disabled:opacity-50"
-                  aria-label="Snížit množství"
                   disabled={quantity <= 1}
+                  className="w-10 h-10 p-0"
                 >
-                  <MinusCircle size={24} />
+                  <MinusCircle size={20} />
                 </Button>
                 <input
                   type="number"
-                  id="quantity"
                   value={quantity}
                   onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="mx-4 w-16 text-center border dark:border-dark-border rounded p-2 appearance-none bg-dark-background text-dark-on-background [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  className="w-20 text-center border dark:border-gray-600 rounded-lg py-2 dark:bg-gray-800 dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   min="1"
                 />
                 <Button
+                  variant="outline"
+                  size="sm"
                   onClick={increaseQuantity}
-                  className="text-dark-text-medium hover:text-dark-primary transition-colors duration-200 p-1"
-                  aria-label="Zvýšit množství"
+                  className="w-10 h-10 p-0"
                 >
-                  <PlusCircle size={24} />
+                  <PlusCircle size={20} />
                 </Button>
               </div>
             </div>
-            
+
+            {/* Add to Cart Button */}
             <Button
               onClick={handleAddToCart}
-              className="w-full bg-dark-primary hover:bg-dark-primary-dark text-dark-on-primary py-3 px-6 rounded-lg font-semibold flex items-center justify-center transition-colors duration-300"
+              size="lg"
+              className="w-full py-4 text-lg font-semibold dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 dark:hover:from-blue-700 dark:hover:to-purple-700"
             >
-              <ShoppingCart size={20} className="mr-2" />
-              Přidat do košíku
+              <ShoppingCart size={24} className="mr-3" />
+              Přidat do košíku Kč
             </Button>
+
+            {/* Age Warning */}
+            {product.is_18_plus && (
+              <Card className="dark:bg-red-900/20 dark:border-red-500/50">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3 dark:text-red-300">
+                    <AlertTriangle size={20} />
+                    <div>
+                      <div className="font-semibold">Obsah pro dospělé 18+</div>
+                      <div className="text-sm">
+                        Tento obsah je určen pouze pro dospělé osoby.
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
-      </Card>
 
-      <div className="mt-12">
-        <Tabs defaultValue="description" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="description">Product Description</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews</TabsTrigger>
-          </TabsList>
-          <TabsContent value="description">
-            <Card className="mt-6 bg-dark-surface rounded-lg shadow-sm p-6 border dark:border-dark-border">
-              <CardContent>
-                <h3 className="text-lg font-semibold mb-4 text-dark-on-surface">Product Description</h3>
-                <p className="text-dark-text-light leading-relaxed whitespace-pre-wrap mb-4">
-                    {product.description || "Detailní popis tohoto díla momentálně není k dispozici."}
-                </p>
+        {/* Description Section */}
+        <div className="mt-16">
+          <Card className="dark:bg-gray-800/50 dark:border-gray-700">
+            <CardContent className="p-8">
+              <h2 className="text-2xl font-bold mb-6 dark:text-white flex items-center gap-2">
+                <Info size={24} />
+                Detaily díla
+              </h2>
+              
+              <div className="space-y-6">
+                {product.description && (
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3 dark:text-white">Popis</h3>
+                    <p className="dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
+                      {product.description}
+                    </p>
+                  </div>
+                )}
+
                 {product.likes && product.likes.length > 0 && (
-                    <div className="mb-4">
-                      <h3 className="text-lg font-semibold mb-2 text-dark-on-surface">Co má ráda:</h3>
-                      <ul className="list-disc list-inside text-dark-text-light">
-                        {product.likes.map((like, index) => (
-                          <li key={index}>{like}</li>
-                        ))}
-                      </ul>
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3 dark:text-white">Vlastnosti</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {product.likes.map((like, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <Check size={16} className="dark:text-green-400" />
+                          <span className="dark:text-gray-300">{like}</span>
+                        </div>
+                      ))}
                     </div>
-                  )}
+                  </div>
+                )}
 
-                  {product.is_18_plus && (
-                    <div className="mb-4 p-3 bg-dark-red-600/20 text-dark-red-400 rounded-md flex items-center">
-                      <AlertTriangle size={20} className="mr-2" />
-                      <span className="font-semibold">Obsah pro dospělé 18+</span>
-                    </div>
-                  )}
+                {product.mail_content && (
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3 dark:text-white">Co obdržíte</h3>
+                    <Card className="dark:bg-gray-700/50">
+                      <CardContent className="p-4">
+                        <p className="dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
+                          {product.mail_content}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-                  {product.mail_content && (
-                    <div className="mb-4 p-4 bg-dark-background/50 rounded-lg border dark:border-dark-border">
-                      <h3 className="text-lg font-semibold mb-2 text-dark-on-surface">Co obdržíte v mailu:</h3>
-                      <p className="text-dark-text-light leading-relaxed whitespace-pre-wrap">{product.mail_content}</p>
-                    </div>
-                  )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-          <TabsContent value="reviews">
-            <Card className="mt-6 bg-dark-surface rounded-lg shadow-sm p-6 border dark:border-dark-border">
-              <CardContent>
-                <h3 className="text-lg font-semibold mb-4 text-dark-on-surface">Customer Reviews</h3>
-                <p className="text-dark-text-medium">Reviews will be displayed here.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+        {/* License Info */}
+        <div className="mt-8">
+          <Card className="dark:bg-blue-900/20 dark:border-blue-500/50">
+            <CardContent className="p-6">
+              <h3 className="text-lg font-semibold mb-3 dark:text-blue-300 flex items-center gap-2">
+                <Shield size={20} />
+                Licenční informace
+              </h3>
+              <div className="space-y-2 dark:text-blue-200 text-sm">
+                <p>✓ Komerční použití povoleno</p>
+                <p>✓ Modifikace a úpravy povoleny</p>
+                <p>✓ Neomezené použití v projektech</p>
+                <p>✗ Přeprodej originálu není povolen</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-
     </div>
   );
 };

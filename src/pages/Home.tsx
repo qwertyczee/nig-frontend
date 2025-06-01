@@ -13,6 +13,11 @@ import {
   Download,
   Shield,
   Users,
+  Star,
+  Zap,
+  Palette,
+  Heart,
+  Globe
 } from 'lucide-react';
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
@@ -30,7 +35,7 @@ const Home: React.FC = () => {
         const data = await fetchProducts();
         setProducts(data);
       } catch (err) {
-        setError((err as Error).message || 'Nepodařilo se načíst služby.');
+        setError((err as Error).message || 'Nepodařilo se načíst galerii.');
         console.error(err);
       } finally {
         setIsLoading(false);
@@ -40,98 +45,214 @@ const Home: React.FC = () => {
   }, []);
 
   const stats = [
-    { icon: Camera, label: 'Professional Photos', value: '10,000+' },
-    { icon: Users, label: 'Happy Customers', value: '5,000+' },
-    { icon: Award, label: 'Award Winning', value: '50+' },
-    { icon: Download, label: 'Instant Downloads', value: '24/7' }
+    { icon: Camera, label: 'Profesionální snímky', value: '15,000+' },
+    { icon: Users, label: 'Spokojených zákazníků', value: '8,500+' },
+    { icon: Award, label: 'Oceněných děl', value: '120+' },
+    { icon: Download, label: 'Okamžitých stažení', value: '24/7' }
   ];
 
-  const featuredProducts = products.slice(0, 3);
+  const features = [
+    {
+      icon: Download,
+      title: 'Okamžité stažení',
+      description: 'Vaše zakoupené dílo získáte ihned po zaplacení. Soubory ve vysokém rozlišení připravené k použití.'
+    },
+    {
+      icon: Shield,
+      title: 'Bezpečnost a kvalita',
+      description: 'Každé dílo prochází pečlivým výběrem a splňuje naše vysoké standardy pro uměleckou dokonalost.'
+    },
+    {
+      icon: Palette,
+      title: 'Rozmanitost stylů',
+      description: 'Od klasických portrétů po moderní konceptuální umění. Najděte přesně to, co hledáte.'
+    },
+    {
+      icon: Globe,
+      title: 'Mezinárodní kvalita',
+      description: 'Práce od talentovaných umělců z celého světa, připravené pro komerční i osobní použití.'
+    },
+    {
+      icon: Zap,
+      title: 'Rychlé zpracování',
+      description: 'Automatizované zpracování objednávek zajišťuje okamžité dodání vašich nákupů.'
+    },
+    {
+      icon: Heart,
+      title: 'Zákaznická podpora',
+      description: 'Náš tým je tu pro vás 24/7. Pomůžeme s výběrem i technickou podporou.'
+    }
+  ];
+
+  const testimonials = [
+    {
+      name: 'Anna Nováková',
+      role: 'Grafická designérka',
+      text: 'Kvalita obrázků je výjimečná. Používám je pravidelně pro své klienty a vždy jsou nadšení.',
+      rating: 5
+    },
+    {
+      name: 'Martin Svoboda',
+      role: 'Majitel reklamní agentury',
+      text: 'Skvělý výběr a profesionální kvalita. Úspora času i peněz oproti tradičnímu focení.',
+      rating: 5
+    },
+    {
+      name: 'Klára Dvořáková',
+      role: 'Freelance fotografka',
+      text: 'Inspirativní kolekce, která mi pomáhá při vlastních projektech. Doporučuji!',
+      rating: 5
+    }
+  ];
+
+  const categories = [
+    { name: 'Portréty', count: '2,500+', image: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg' },
+    { name: 'Lifestyle', count: '3,200+', image: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg' },
+    { name: 'Business', count: '1,800+', image: 'https://images.pexels.com/photos/1181424/pexels-photo-1181424.jpeg' },
+    { name: 'Fashion', count: '2,100+', image: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg' }
+  ];
+
+  const featuredProducts = products.slice(0, 6);
 
   return (
     <div className="min-h-screen dark:bg-background dark:text-on-background">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.pexels.com/photos/1323712/pexels-photo-1323712.jpeg"
-            alt="Hero Background"
-            className="w-full h-full object-cover opacity-30"
+            alt="Professional Photography Studio"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 dark:bg-gradient-to-r dark:from-background dark:via-background/80 dark:to-transparent"></div>
+          <div className="absolute inset-0 bg-black/60"></div>
+          <div className="absolute inset-0 dark:bg-gradient-to-r dark:from-background/90 dark:via-background/70 dark:to-transparent"></div>
         </div>
         
-        <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 dark:bg-gradient-to-r dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent">
-            Digital Art Photography
+        <div className="relative z-10 text-center max-w-6xl mx-auto px-6">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 dark:bg-gradient-to-r dark:from-blue-400 dark:via-purple-500 dark:to-pink-500 bg-clip-text text-transparent leading-tight">
+            Profesionální digitální<br />fotografie & umění
           </h1>
-          <p className="text-xl md:text-2xl dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            Discover stunning digital art and photography from talented artists worldwide. 
-            High-quality, instant downloads for your creative projects.
+          <p className="text-xl md:text-2xl dark:text-gray-200 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Objevte působivé digitální umění a profesionální fotografii od talentovaných umělců. 
+            Vysoká kvalita, okamžité stažení, neomezené možnosti využití.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
             <Link
               to="/products"
-              className="px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 dark:hover:from-blue-700 dark:hover:to-purple-700 dark:text-on-secondary"
+              className="group px-10 py-5 rounded-xl text-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-3 dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 dark:hover:from-blue-700 dark:hover:to-purple-700 dark:text-white shadow-2xl hover:shadow-blue-500/25"
             >
-              Explore Gallery <ArrowRight size={20} />
+              Prozkoumat galerii 
+              <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
             </Link>
-            <Button variant="outline" className="px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 border-2 dark:border-gray-400 dark:hover:border-gray-300 dark:text-gray-300 dark:hover:text-on-secondary">
-              Learn More
+            <Button 
+              variant="outline" 
+              className="px-10 py-5 rounded-xl text-lg font-semibold transition-all duration-300 border-2 dark:border-gray-300 dark:hover:border-white dark:text-gray-200 dark:hover:text-white dark:hover:bg-white/10 backdrop-blur-sm"
+            >
+              Jak to funguje
             </Button>
+          </div>
+
+          {/* Trust indicators */}
+          <div className="flex flex-wrap justify-center gap-8 dark:text-gray-300">
+            <div className="flex items-center gap-2">
+              <CheckCircle size={20} className="dark:text-green-400" />
+              <span>Okamžité stažení</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Shield size={20} className="dark:text-blue-400" />
+              <span>Bezpečné platby</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Award size={20} className="dark:text-yellow-400" />
+              <span>Profesionální kvalita</span>
+            </div>
           </div>
         </div>
 
         {/* Age Verification Notice */}
-        <Card className="absolute bottom-8 left-8 p-4 max-w-sm dark:bg-red-600/20 dark:border dark:border-red-500 rounded-lg">
-          <div className="flex items-center gap-2 dark:text-red-400 mb-2">
+        <Card className="absolute bottom-8 left-8 p-4 max-w-sm dark:bg-red-900/30 dark:border dark:border-red-500/50 rounded-xl backdrop-blur-sm">
+          <div className="flex items-center gap-2 dark:text-red-300 mb-2">
             <Shield size={20} />
-            <span className="font-semibold">18+ Content Available</span>
+            <span className="font-semibold">Obsah 18+</span>
           </div>
-          <CardContent className="p-0 text-sm dark:text-gray-300">
-            Some content may be suitable for mature audiences only. Age verification required.
+          <CardContent className="p-0 text-sm dark:text-red-200">
+            Některý obsah je určen pouze pro dospělé. Vyžaduje ověření věku.
           </CardContent>
         </Card>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 dark:bg-gray-800">
+      {/* <section className="py-20 dark:bg-gray-900/50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
-              <Card key={index} className="text-center dark:bg-gray-800 p-4">
-                <CardContent className="p-0">
-                  <div className="inline-flex items-center justify-center w-16 h-16 dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 rounded-full mb-4">
-                    <stat.icon size={32} className="dark:text-on-secondary" />
+              <Card key={index} className="text-center dark:bg-gray-800/50 border-0 backdrop-blur-sm hover:scale-105 transition-transform duration-300">
+                <CardContent className="p-8">
+                  <div className="inline-flex items-center justify-center w-20 h-20 dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 rounded-full mb-6 shadow-xl">
+                    <stat.icon size={36} className="dark:text-white" />
                   </div>
-                  <div className="text-3xl font-bold dark:text-on-secondary mb-2">{stat.value}</div>
-                  <div className="dark:text-gray-400">{stat.label}</div>
+                  <div className="text-4xl font-bold dark:text-white mb-3">{stat.value}</div>
+                  <div className="dark:text-gray-300 text-lg">{stat.label}</div>
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
-      {/* Featured Products */}
-      <section className="py-20 dark:bg-background">
+      {/* Categories Section */}
+      {/* <section className="py-20 dark:bg-background">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Featured Artwork</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Kategorie</h2>
             <p className="text-xl dark:text-gray-400 max-w-2xl mx-auto">
-              Handpicked masterpieces from our most talented photographers and digital artists
+              Prozkoumejte naši rozsáhlou kolekci rozdělenu do specializovaných kategorií
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {categories.map((category, index) => (
+              <Link key={index} to={`/products?category=${category.name.toLowerCase()}`}>
+                <Card className="group overflow-hidden rounded-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+                  <div className="relative h-48">
+                    <img
+                      src={category.image}
+                      alt={category.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300"></div>
+                    <div className="absolute inset-0 flex flex-col justify-end p-6">
+                      <h3 className="text-2xl font-bold text-white mb-2">{category.name}</h3>
+                      <p className="text-gray-200">{category.count} snímků</p>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section> */}
+
+      {/* Featured Products */}
+      <section className="py-20 dark:bg-gray-900/30">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Doporučujeme</h2>
+            <p className="text-xl dark:text-gray-400 max-w-2xl mx-auto">
+              Ručně vybraná mistrovská díla od našich nejtalentovanějších fotografů a digitálních umělců
             </p>
           </div>
 
           {isLoading ? (
-            <div className="flex justify-center items-center py-20 text-dark-primary">
+            <div className="flex justify-center items-center py-20">
               <Loader2 className="animate-spin dark:text-blue-500" size={48} />
             </div>
           ) : error ? (
-            <Card className="text-center py-20 bg-dark-surface border border-dark-error">
+            <Card className="text-center py-20 dark:bg-red-900/20 border border-red-500/50">
               <CardContent>
-                <AlertTriangle className="mx-auto dark:text-red-500 mb-4" size={48} />
-                <p className="dark:text-red-400 text-lg">{error}</p>
+                <AlertTriangle className="mx-auto dark:text-red-400 mb-4" size={48} />
+                <p className="dark:text-red-300 text-lg">{error}</p>
               </CardContent>
             </Card>
           ) : (
@@ -142,12 +263,13 @@ const Home: React.FC = () => {
             </div>
           )}
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-16">
             <Link
               to="/products"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 dark:hover:from-blue-700 dark:hover:to-purple-700 dark:text-on-secondary"
+              className="group inline-flex items-center gap-3 px-10 py-5 rounded-xl text-lg font-semibold transition-all duration-300 transform hover:scale-105 dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 dark:hover:from-blue-700 dark:hover:to-purple-700 dark:text-white shadow-2xl hover:shadow-blue-500/25"
             >
-              View All Artwork <ArrowRight size={20} />
+              Zobrazit celou galerii 
+              <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
         </div>
@@ -157,46 +279,74 @@ const Home: React.FC = () => {
       <section className="py-20 dark:bg-background">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Why Choose Us</h2>
-            <p className="text-xl dark:text-gray-400">Premium digital art with unmatched quality and service</p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Proč si vybrat nás</h2>
+            <p className="text-xl dark:text-gray-400 max-w-2xl mx-auto">
+              Prémiové digitální umění s bezkonkurenční kvalitou a servisem
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="p-8 rounded-xl transition-colors dark:bg-gray-800 dark:border dark:border-gray-700 dark:hover:border-blue-500">
-              <CardContent className="p-0">
-                <div className="w-16 h-16 dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 rounded-lg flex items-center justify-center mb-6">
-                  <Download size={32} className="dark:text-on-secondary" />
-                </div>
-                <h3 className="text-2xl font-bold mb-4">Instant Downloads</h3>
-                <p className="dark:text-gray-400">
-                  Get your purchased artwork immediately after payment. High-resolution files ready for use.
-                </p>
-              </CardContent>
-            </Card>
+            {features.map((feature, index) => (
+              <Card key={index} className="group p-8 rounded-xl transition-all duration-300 dark:bg-gray-800/50 dark:border dark:border-gray-700/50 dark:hover:border-blue-500/50 hover:shadow-2xl hover:scale-105 backdrop-blur-sm">
+                <CardContent className="p-0">
+                  <div className="w-20 h-20 dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                    <feature.icon size={36} className="dark:text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 dark:text-white">{feature.title}</h3>
+                  <p className="dark:text-gray-300 leading-relaxed">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            <Card className="p-8 rounded-xl transition-colors dark:bg-gray-800 dark:border dark:border-gray-700 dark:hover:border-blue-500">
-              <CardContent className="p-0">
-                <div className="w-16 h-16 dark:bg-gradient-to-r dark:from-green-600 dark:to-blue-600 rounded-lg flex items-center justify-center mb-6">
-                  <CheckCircle size={32} className="dark:text-on-secondary" />
-                </div>
-                <h3 className="text-2xl font-bold mb-4">Quality Guaranteed</h3>
-                <p className="dark:text-gray-400">
-                  Every piece is carefully curated and meets our high standards for artistic excellence.
-                </p>
-              </CardContent>
-            </Card>
+      {/* Testimonials Section */}
+      <section className="py-20 dark:bg-gray-900/30">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Co říkají naši klienti</h2>
+            <p className="text-xl dark:text-gray-400">Přesvědčte se sami o kvalitě našich služeb</p>
+          </div>
 
-            <Card className="p-8 rounded-xl transition-colors dark:bg-gray-800 dark:border dark:border-gray-700 dark:hover:border-blue-500">
-              <CardContent className="p-0">
-                <div className="w-16 h-16 dark:bg-gradient-to-r dark:from-purple-600 dark:to-pink-600 rounded-lg flex items-center justify-center mb-6">
-                  <Shield size={32} className="dark:text-on-secondary" />
-                </div>
-                <h3 className="text-2xl font-bold mb-4">Secure & Private</h3>
-                <p className="dark:text-gray-400">
-                  Your purchases and personal information are protected with enterprise-grade security.
-                </p>
-              </CardContent>
-            </Card>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="p-8 rounded-xl dark:bg-gray-800/50 backdrop-blur-sm border-0 hover:scale-105 transition-transform duration-300">
+                <CardContent className="p-0">
+                  <div className="flex mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} size={20} fill="yellow" strokeWidth={0} className="dark:text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                  <p className="dark:text-gray-300 mb-6 italic leading-relaxed">"{testimonial.text}"</p>
+                  <div>
+                    <div className="font-semibold dark:text-white">{testimonial.name}</div>
+                    <div className="text-sm dark:text-gray-400">{testimonial.role}</div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 dark:bg-gradient-to-r dark:from-blue-900/50 dark:to-purple-900/50">
+        <div className="max-w-4xl mx-auto text-center px-6">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 dark:text-white">
+            Začněte objevovat už dnes
+          </h2>
+          <p className="text-xl dark:text-gray-200 mb-8 leading-relaxed">
+            Připojte se k tisícům spokojených zákazníků a objevte nekonečné možnosti 
+            našeho digitálního umění a profesionální fotografie.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/products"
+              className="px-10 py-5 rounded-xl text-lg font-semibold transition-all duration-300 transform hover:scale-105 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 shadow-2xl"
+            >
+              Procházet galerii
+            </Link>
           </div>
         </div>
       </section>
