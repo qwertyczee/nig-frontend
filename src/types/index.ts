@@ -59,8 +59,8 @@ export interface Order {
   items: OrderItem[];
   total_amount: number;
   status: OrderStatus;
-  shipping_addresses: ShippingAddress;
-  billing_addresses?: ShippingAddress;
+  shipping_address_id: ShippingAddress;
+  billing_address_id?: ShippingAddress;
   created_at: string;
   updated_at: string; 
 }
