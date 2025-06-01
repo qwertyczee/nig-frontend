@@ -54,13 +54,20 @@ export type OrderStatus =
   | 'failed';
 
 export interface Order {
-  id: string; // or number, depending on your DB schema for orders
-  user_id?: string; // If you associate orders with users
-  items: OrderItem[]; // Backend might return full order items
+  id: string;
+  user_id?: string;
+  items: OrderItem[];
   total_amount: number;
   status: OrderStatus;
+  shipping_addresses: ShippingAddress;
+  billing_addresses?: ShippingAddress;
+  created_at: string;
+  updated_at: string; 
+}
+
+export interface OrderPayload {
+  items: Array<OrderItemInput>;
   shipping_address: ShippingAddress;
   billing_address?: ShippingAddress;
-  created_at: string; // ISO date string
-  updated_at: string; // ISO date string
+  customer_email?: string;
 }
