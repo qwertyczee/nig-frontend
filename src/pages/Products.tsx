@@ -57,7 +57,14 @@ const Products: React.FC = () => {
     }
 
     if (categoryParam && categoryParam !== 'all') {
-      productsToProcess = productsToProcess.filter(product => product.category === categoryParam);
+      productsToProcess = productsToProcess.filter(product => {
+        if (Array.isArray(product.category)) {
+          return product.category.includes(categoryParam);
+        } else if (typeof product.category === 'string') {
+          return product.category === categoryParam;
+        }
+        return false;
+      });
     }
 
     const sorted = productsToProcess.sort((a, b) => {
