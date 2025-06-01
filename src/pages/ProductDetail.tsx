@@ -145,7 +145,7 @@ const ProductDetail: React.FC = () => {
             >
               Galerie
             </button>
-            {product.category && (
+            {product.category && product.category.length > 0 && (
               <>
                 <ChevronRight size={16} />
                 <button
