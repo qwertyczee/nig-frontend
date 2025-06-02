@@ -11,13 +11,25 @@ interface ProductCardProps {
   product: Product;
 }
 
+/**
+ * Renders a product card with product details and an add-to-cart button.
+ * @param {Object} props - The component props.
+ * @param {Product} props.product - The product object to display.
+ * @returns {JSX.Element} The ProductCard component.
+ */
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToCart } = useCart();
   const { toast } = useToast();
   
+  /**
+   * Handles adding a product to the cart.
+   * Prevents default link navigation and stops event propagation.
+   * Shows a toast notification upon successful addition.
+   * @param {React.MouseEvent} e - The mouse event.
+   */
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent navigation if card is a link
-    e.stopPropagation(); // Prevent event bubbling
+    e.preventDefault();
+    e.stopPropagation();
     addToCart(product);
     toast({
       title: "Přidáno do košíku",

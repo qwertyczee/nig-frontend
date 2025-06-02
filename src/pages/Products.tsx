@@ -7,6 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSearchParams } from 'react-router-dom';
 
+/**
+ * Renders the products page, displaying a list of products with filtering and sorting options.
+ * Allows users to filter by category, content type (18+), and sort by price.
+ * @returns {JSX.Element} The Products page component.
+ */
 const Products: React.FC = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -20,6 +25,10 @@ const Products: React.FC = () => {
   const categoryParam = searchParams.get('category');
   const typeParam = searchParams.get('type');
 
+  /**
+   * Loads all products from the API and initializes the product lists.
+   * Handles loading and error states during data fetching.
+   */
   useEffect(() => {
     const loadProducts = async () => {
       setIsLoading(true);

@@ -3,14 +3,12 @@ import { useLocation, Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// Define a basic type for order details, adjust based on actual API response
 interface OrderDetails {
   id: string;
-  amount_total?: number; // Assuming this is in cents from Polar
+  amount_total?: number;
   currency?: string;
   customer_email?: string;
   status?: string;
-  // Add other fields you expect, e.g., line_items or metadata
   line_items?: {
     data: Array<{
       id: string;
@@ -21,12 +19,16 @@ interface OrderDetails {
   };
   metadata?: {
     internal_order_id?: string;
-    [key: string]: string | number | boolean | null | undefined; // Be more specific for metadata values
+    [key: string]: string | number | boolean | null | undefined;
   };
-  // Fallback for any other properties
-  [key: string]: unknown; // Use unknown for better type safety
+  [key: string]: unknown;
 }
 
+/**
+ * Renders the order success page, displaying details of a successful order
+ * fetched using a customer session token from the URL.
+ * @returns {JSX.Element} The OrderSuccess page component.
+ */
 const OrderSuccess: React.FC = () => {
   const location = useLocation();
   const [customerSessionToken, setCustomerSessionToken] = useState<string | null>(null);
@@ -40,13 +42,14 @@ const OrderSuccess: React.FC = () => {
     setCustomerSessionToken(token);
 
     if (token) {
+      /**
+       * Fetches order details from the backend using the customer session token.
+       * Handles loading, error states, and updates the order details state.
+       */
       const fetchOrderDetails = async () => {
         setLoading(true);
         setError(null);
         try {
-          // Ensure your backend is running on the correct port or use full URL
-          // For local dev, if frontend is on 5173 and backend on 3000, proxy or full URL is needed.
-          // Assuming vite proxy is set up or using relative path if on same domain.
           const response = await fetch(`/api/orders/by-session/${token}`);
           if (!response.ok) {
             const errorData = await response.json();
@@ -54,7 +57,7 @@ const OrderSuccess: React.FC = () => {
           }
           const data: OrderDetails = await response.json();
           setOrderDetails(data);
-        } catch (err: unknown) { // Use unknown for caught errors
+        } catch (err: unknown) {
           if (err instanceof Error) {
             setError(err.message);
           } else {
@@ -92,7 +95,7 @@ const OrderSuccess: React.FC = () => {
           {orderDetails && (
             <div className="mt-6 p-4 border border-dark-border rounded-lg bg-dark-background/50 text-left dark:text-dark-text-light">
               <h2 className="text-2xl font-semibold mb-3 text-dark-on-surface">Potvrzení objednávky</h2>
-              <p className="text-dark-text-light"><strong>ID objednávky (Polar Session):</strong> {orderDetails.id}</p>
+              <p className="text-dark-text-light"><strong>ID objednávky:</strong> {orderDetails.id}</p>
               {orderDetails.metadata?.internal_order_id && (
                 <p className="text-dark-text-light"><strong>Interní reference objednávky:</strong> {orderDetails.metadata.internal_order_id}</p>
               )}

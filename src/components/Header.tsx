@@ -4,6 +4,11 @@ import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { Button } from "./ui/button";
 
+/**
+ * Renders the header component of the application.
+ * Handles scroll effects, mobile menu toggle, and displays cart item count.
+ * @returns {JSX.Element} The Header component.
+ */
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

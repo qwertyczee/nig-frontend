@@ -17,6 +17,13 @@ declare global {
 
 countries.registerLocale(cs);
 
+/**
+ * Renders a select input for choosing a country, populated with country names in Czech.
+ * @param {Object} props - The component props.
+ * @param {string} props.value - The currently selected country code.
+ * @param {(e: React.ChangeEvent<HTMLSelectElement>) => void} props.onChange - The change event handler.
+ * @returns {JSX.Element} The CountrySelect component.
+ */
 function CountrySelect({ value, onChange }: { value: string; onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void }) {
   const countryOptions = Object.entries(countries.getNames('cs', { select: 'official' }))
     .map(([code, name]) => ({ code, name }));
@@ -36,9 +43,14 @@ function CountrySelect({ value, onChange }: { value: string; onChange: (e: React
   );
 }
 
+/**
+ * Renders the checkout page, allowing users to enter shipping details and proceed to payment.
+ * Handles form state, submission, and interaction with the payment gateway.
+ * @returns {JSX.Element | null} The Checkout page component or null if cart is empty.
+ */
 const Checkout: React.FC = () => {
   const navigate = useNavigate();
-  const { cartItems, totalPrice /* clearCart */ } = useCart(); // clearCart removed as it's not used here
+  const { cartItems, totalPrice } = useCart();
   const [formState, setFormState] = useState({
     firstName: '',
     lastName: '',
@@ -57,11 +69,20 @@ const Checkout: React.FC = () => {
     return null;
   }
 
+  /**
+   * Handles changes to form input fields, updating the form state.
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} e - The change event.
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormState(prev => ({ ...prev, [name]: value }));
   };
 
+  /**
+   * Handles the form submission for checkout.
+   * Creates an order, initiates the checkout process, and handles potential errors.
+   * @param {React.FormEvent} e - The form submission event.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -85,7 +106,7 @@ const Checkout: React.FC = () => {
       items: orderItems,
       shipping_address: shippingAddress,
       billing_address: shippingAddress,
-      customer_email: formState.email, // Add customer email to the payload
+      customer_email: formState.email,
     };
 
     try {

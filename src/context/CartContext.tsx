@@ -11,8 +11,13 @@ interface CartContextType {
   totalPrice: number;
 }
 
-export const CartContext = createContext<CartContextType | undefined>(undefined); // Export CartContext
+export const CartContext = createContext<CartContextType | undefined>(undefined);
 
+/**
+ * Custom hook to access the cart context.
+ * Throws an error if used outside of a CartProvider.
+ * @returns {CartContextType} The cart context.
+ */
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
@@ -25,9 +30,20 @@ interface CartProviderProps {
   children: ReactNode;
 }
 
+/**
+ * Provides the cart context to its children.
+ * Manages cart items, quantities, and total calculations.
+ * @param {Object} props - The component props.
+ * @param {ReactNode} props.children - The child components to be rendered within the provider.
+ * @returns {JSX.Element} The CartProvider component.
+ */
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
+  /**
+   * Adds a product to the cart. If the product already exists, its quantity is incremented.
+   * @param {Product} product - The product to add to the cart.
+   */
   const addToCart = (product: Product) => {
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.product.id === product.id);
@@ -44,10 +60,20 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     });
   };
 
+  /**
+   * Removes a product from the cart.
+   * @param {string} productId - The ID of the product to remove.
+   */
   const removeFromCart = (productId: string) => {
     setCartItems(prevItems => prevItems.filter(item => item.product.id !== productId));
   };
 
+  /**
+   * Updates the quantity of a product in the cart.
+   * If the quantity is 0 or less, the product is removed from the cart.
+   * @param {string} productId - The ID of the product to update.
+   * @param {number} quantity - The new quantity for the product.
+   */
   const updateQuantity = (productId: string, quantity: number) => {
     if (quantity <= 0) {
       removeFromCart(productId);
@@ -63,6 +89,9 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     );
   };
 
+  /**
+   * Clears all items from the cart.
+   */
   const clearCart = () => {
     setCartItems([]);
   };

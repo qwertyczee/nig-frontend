@@ -9,10 +9,8 @@ import {
   Award, 
   Loader2, 
   AlertTriangle,
-  Camera,
   Download,
   Shield,
-  Users,
   Star,
   Zap,
   Palette,
@@ -22,11 +20,20 @@ import {
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 
+/**
+ * Renders the home page of the application, featuring a hero section,
+ * product display, feature highlights, and testimonials.
+ * @returns {JSX.Element} The Home page component.
+ */
 const Home: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Fetches products from the API and updates the component state.
+   * Handles loading and error states during the data fetching process.
+   */
   useEffect(() => {
     const loadProducts = async () => {
       setIsLoading(true);
@@ -44,12 +51,6 @@ const Home: React.FC = () => {
     loadProducts();
   }, []);
 
-  const stats = [
-    { icon: Camera, label: 'Profesionální snímky', value: '15,000+' },
-    { icon: Users, label: 'Spokojených zákazníků', value: '8,500+' },
-    { icon: Award, label: 'Oceněných děl', value: '120+' },
-    { icon: Download, label: 'Okamžitých stažení', value: '24/7' }
-  ];
 
   const features = [
     {
@@ -103,13 +104,6 @@ const Home: React.FC = () => {
       text: 'Inspirativní kolekce, která mi pomáhá při vlastních projektech. Doporučuji!',
       rating: 5
     }
-  ];
-
-  const categories = [
-    { name: 'Portréty', count: '2,500+', image: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg' },
-    { name: 'Lifestyle', count: '3,200+', image: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg' },
-    { name: 'Business', count: '1,800+', image: 'https://images.pexels.com/photos/1181424/pexels-photo-1181424.jpeg' },
-    { name: 'Fashion', count: '2,100+', image: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg' }
   ];
 
   const featuredProducts = products.slice(0, 6);
@@ -181,58 +175,6 @@ const Home: React.FC = () => {
           </CardContent>
         </Card>
       </section>
-
-      {/* Stats Section */}
-      {/* <section className="py-20 dark:bg-gray-900/50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <Card key={index} className="text-center dark:bg-gray-800/50 border-0 backdrop-blur-sm hover:scale-105 transition-transform duration-300">
-                <CardContent className="p-8">
-                  <div className="inline-flex items-center justify-center w-20 h-20 dark:bg-gradient-to-r dark:from-blue-600 dark:to-purple-600 rounded-full mb-6 shadow-xl">
-                    <stat.icon size={36} className="dark:text-white" />
-                  </div>
-                  <div className="text-4xl font-bold dark:text-white mb-3">{stat.value}</div>
-                  <div className="dark:text-gray-300 text-lg">{stat.label}</div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
-      {/* Categories Section */}
-      {/* <section className="py-20 dark:bg-background">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Kategorie</h2>
-            <p className="text-xl dark:text-gray-400 max-w-2xl mx-auto">
-              Prozkoumejte naši rozsáhlou kolekci rozdělenu do specializovaných kategorií
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {categories.map((category, index) => (
-              <Link key={index} to={`/products?category=${category.name.toLowerCase()}`}>
-                <Card className="group overflow-hidden rounded-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
-                  <div className="relative h-48">
-                    <img
-                      src={category.image}
-                      alt={category.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300"></div>
-                    <div className="absolute inset-0 flex flex-col justify-end p-6">
-                      <h3 className="text-2xl font-bold text-white mb-2">{category.name}</h3>
-                      <p className="text-gray-200">{category.count} snímků</p>
-                    </div>
-                  </div>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section> */}
 
       {/* Featured Products */}
       <section className="py-20 dark:bg-gray-900/30">

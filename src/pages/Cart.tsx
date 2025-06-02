@@ -5,6 +5,11 @@ import { Trash2, MinusCircle, PlusCircle, ArrowRight, ArrowLeft } from 'lucide-r
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
+/**
+ * Renders the shopping cart page, displaying items in the cart,
+ * allowing quantity updates, item removal, and navigation to checkout.
+ * @returns {JSX.Element} The Cart page component.
+ */
 const Cart: React.FC = () => {
   const { cartItems, removeFromCart, updateQuantity, totalPrice } = useCart();
   const navigate = useNavigate();

@@ -2,6 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "../components/ui/button";
 
+/**
+ * Renders the 404 Not Found page.
+ * Provides a visual indication of the error and a link to return to the homepage.
+ * @returns {JSX.Element} The NotFound page component.
+ */
 const NotFound: React.FC = () => {
   return (
     <div className="relative h-screen flex items-center justify-center overflow-hidden dark:bg-background dark:text-on-background">

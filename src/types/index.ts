@@ -1,9 +1,9 @@
 export interface Product {
-  id: string; // Changed from number to string for UUIDs from Supabase
+  id: string;
   name: string;
   price: number;
   description: string;
-  shortDescription?: string; // Keep as optional or ensure backend provides it
+  shortDescription?: string;
   main_image_url?: string;
   rating: number;
   sub_image_urls?: string[];
@@ -35,11 +35,10 @@ export interface OrderItemInput {
   quantity: number;
 }
 
-// This represents a created order item, possibly with more details
 export interface OrderItem extends OrderItemInput {
-  id: string; // or number, depending on your DB schema for order_items
+  id: string;
   price_at_purchase: number;
-  product?: Product; // Optionally include full product details
+  product?: Product;
 }
 
 export type OrderStatus =

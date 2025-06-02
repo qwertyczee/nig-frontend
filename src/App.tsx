@@ -11,6 +11,10 @@ import { CartProvider } from './context/CartContext';
 import NotFound from './pages/NotFound';
 import TermsOfService from './pages/TermsOfService';
 
+/**
+ * Main application component that sets up routing and provides the cart context.
+ * @returns {JSX.Element} The root App component.
+ */
 function App() {
   return (
     <CartProvider>

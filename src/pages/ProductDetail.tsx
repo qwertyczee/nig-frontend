@@ -21,6 +21,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
+/**
+ * Renders the product detail page, displaying information about a specific product,
+ * allowing users to adjust quantity and add to cart.
+ * @returns {JSX.Element} The ProductDetail page component.
+ */
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -37,6 +42,10 @@ const ProductDetail: React.FC = () => {
       setIsLoading(false);
       return;
     }
+    /**
+     * Fetches product details by ID from the API.
+     * Handles loading, error states, and sets the product and selected image.
+     */
     const loadProduct = async () => {
       setIsLoading(true);
       setError(null);
@@ -96,6 +105,10 @@ const ProductDetail: React.FC = () => {
     );
   }
 
+  /**
+   * Handles adding the selected quantity of the product to the cart.
+   * Navigates to the cart page after adding.
+   */
   const handleAddToCart = () => {
     if (product) {
       for (let i = 0; i < quantity; i++) {
@@ -105,12 +118,19 @@ const ProductDetail: React.FC = () => {
     }
   };
 
+  /**
+   * Decreases the quantity of the product to be added to the cart,
+   * ensuring it does not go below 1.
+   */
   const decreaseQuantity = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
     }
   };
 
+  /**
+   * Increases the quantity of the product to be added to the cart.
+   */
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
   };

@@ -18,6 +18,11 @@ import {
   Globe
 } from "lucide-react";
 
+/**
+ * Renders the Terms of Service page, displaying the legal terms and conditions
+ * in an accordion format.
+ * @returns {JSX.Element} The TermsOfService page component.
+ */
 const TermsOfService: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-12 bg-background min-h-screen">

@@ -2,6 +2,11 @@ import React from 'react';
 /* import { Facebook, Instagram, Twitter } from 'lucide-react'; */
 import { Link } from 'react-router-dom';
 
+/**
+ * Renders the footer component of the application.
+ * Displays copyright information, navigation links, and contact details.
+ * @returns {JSX.Element} The Footer component.
+ */
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
