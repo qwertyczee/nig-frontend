@@ -17,6 +17,67 @@ declare global {
 
 countries.registerLocale(cs);
 
+// Validation functions
+const validateEmail = (email: string): string | null => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email.trim()) return 'E-mail je povinný';
+  if (!emailRegex.test(email)) return 'Neplatný formát e-mailu';
+  return null;
+};
+
+const validatePhone = (phone: string): string | null => {
+  const phoneRegex = /^(\+420\s?)?[0-9\s]{9,}$/;
+  if (!phone.trim()) return 'Telefon je povinný';
+  if (!phoneRegex.test(phone.replace(/\s/g, ''))) return 'Neplatný formát telefonu';
+  return null;
+};
+
+const validateZip = (zip: string, country: string): string | null => {
+  if (!zip.trim()) return 'PSČ je povinné';
+  
+  // Czech postal code validation (5 digits, optionally with space after 3rd digit)
+  if (country === 'CZ') {
+    const czechZipRegex = /^\d{3}\s?\d{2}$/;
+    if (!czechZipRegex.test(zip)) return 'PSČ musí být ve formátu 12345 nebo 123 45';
+  }
+  // Slovak postal code validation (5 digits, optionally with space after 3rd digit)
+  else if (country === 'SK') {
+    const slovakZipRegex = /^\d{3}\s?\d{2}$/;
+    if (!slovakZipRegex.test(zip)) return 'PSČ musí být ve formátu 12345 nebo 123 45';
+  }
+  // General validation for other countries (at least 3 digits)
+  else {
+    const generalZipRegex = /^\d{3,}$/;
+    if (!generalZipRegex.test(zip.replace(/\s/g, ''))) return 'PSČ musí obsahovat alespoň 3 číslice';
+  }
+  
+  return null;
+};
+
+const validateRequired = (value: string, fieldName: string): string | null => {
+  if (!value.trim()) return `${fieldName} je povinné`;
+  return null;
+};
+
+const validateName = (name: string, fieldName: string): string | null => {
+  if (!name.trim()) return `${fieldName} je povinné`;
+  if (name.trim().length < 2) return `${fieldName} musí mít alespoň 2 znaky`;
+  if (!/^[a-zA-ZáčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ\s-]+$/.test(name)) {
+    return `${fieldName} může obsahovat pouze písmena, pomlčky a mezery`;
+  }
+  return null;
+};
+
+interface ValidationErrors {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  street?: string;
+  city?: string;
+  zip?: string;
+}
+
 /**
  * Renders a select input for choosing a country, populated with country names in Czech.
  * @param {Object} props - The component props.
@@ -61,6 +122,7 @@ const Checkout: React.FC = () => {
     zip: '',
     country: 'CZ',
   });
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -73,9 +135,55 @@ const Checkout: React.FC = () => {
    * Handles changes to form input fields, updating the form state.
    * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} e - The change event.
    */
+  const validateField = (name: string, value: string): string | null => {
+    switch (name) {
+      case 'firstName':
+        return validateName(value, 'Jméno');
+      case 'lastName':
+        return validateName(value, 'Příjmení');
+      case 'email':
+        return validateEmail(value);
+      case 'phone':
+        return validatePhone(value);
+      case 'street':
+        return validateRequired(value, 'Ulice a číslo');
+      case 'city':
+        return validateName(value, 'Město');
+      case 'zip':
+        return validateZip(value, formState.country);
+      default:
+        return null;
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormState(prev => ({ ...prev, [name]: value }));
+    
+    // Real-time validation
+    const error = validateField(name, value);
+    setValidationErrors(prev => ({
+      ...prev,
+      [name]: error
+    }));
+  };
+
+  const validateAllFields = (): boolean => {
+    const errors: ValidationErrors = {};
+    let isValid = true;
+
+    Object.entries(formState).forEach(([key, value]) => {
+      if (key !== 'country') { // Country is always selected, no need to validate
+        const error = validateField(key, value);
+        if (error) {
+          errors[key as keyof ValidationErrors] = error;
+          isValid = false;
+        }
+      }
+    });
+
+    setValidationErrors(errors);
+    return isValid;
   };
 
   /**
@@ -85,8 +193,15 @@ const Checkout: React.FC = () => {
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     setError(null);
+
+    // Validate all fields before submission
+    if (!validateAllFields()) {
+      setError('Prosím opravte chyby ve formuláři před odesláním.');
+      return;
+    }
+
+    setIsSubmitting(true);
 
     const shippingAddress: ShippingAddress = {
       full_name: `${formState.firstName} ${formState.lastName}`,
@@ -157,8 +272,13 @@ const Checkout: React.FC = () => {
                     value={formState.firstName}
                     onChange={handleChange}
                     required
-                    className="w-full border dark:border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
+                    className={`w-full border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background ${
+                      validationErrors.firstName ? 'border-red-500 dark:border-red-500' : 'dark:border-dark-border'
+                    }`}
                   />
+                  {validationErrors.firstName && (
+                    <p className="text-red-500 text-sm mt-1">{validationErrors.firstName}</p>
+                  )}
                 </div>
                 
                 <div>
@@ -172,8 +292,13 @@ const Checkout: React.FC = () => {
                     value={formState.lastName}
                     onChange={handleChange}
                     required
-                    className="w-full border dark:border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
+                    className={`w-full border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background ${
+                      validationErrors.lastName ? 'border-red-500 dark:border-red-500' : 'dark:border-dark-border'
+                    }`}
                   />
+                  {validationErrors.lastName && (
+                    <p className="text-red-500 text-sm mt-1">{validationErrors.lastName}</p>
+                  )}
                 </div>
                 
                 <div>
@@ -187,8 +312,13 @@ const Checkout: React.FC = () => {
                     value={formState.email}
                     onChange={handleChange}
                     required
-                    className="w-full border dark:border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
+                    className={`w-full border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background ${
+                      validationErrors.email ? 'border-red-500 dark:border-red-500' : 'dark:border-dark-border'
+                    }`}
                   />
+                  {validationErrors.email && (
+                    <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>
+                  )}
                 </div>
                 
                 <div>
@@ -202,8 +332,14 @@ const Checkout: React.FC = () => {
                     value={formState.phone}
                     onChange={handleChange}
                     required
-                    className="w-full border dark:border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
+                    placeholder="např. +420 123 456 789"
+                    className={`w-full border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background ${
+                      validationErrors.phone ? 'border-red-500 dark:border-red-500' : 'dark:border-dark-border'
+                    }`}
                   />
+                  {validationErrors.phone && (
+                    <p className="text-red-500 text-sm mt-1">{validationErrors.phone}</p>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -224,8 +360,13 @@ const Checkout: React.FC = () => {
                     value={formState.street}
                     onChange={handleChange}
                     required
-                    className="w-full border dark:border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
+                    className={`w-full border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background ${
+                      validationErrors.street ? 'border-red-500 dark:border-red-500' : 'dark:border-dark-border'
+                    }`}
                   />
+                  {validationErrors.street && (
+                    <p className="text-red-500 text-sm mt-1">{validationErrors.street}</p>
+                  )}
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -240,8 +381,13 @@ const Checkout: React.FC = () => {
                       value={formState.city}
                       onChange={handleChange}
                       required
-                      className="w-full border dark:border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
+                      className={`w-full border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background ${
+                        validationErrors.city ? 'border-red-500 dark:border-red-500' : 'dark:border-dark-border'
+                      }`}
                     />
+                    {validationErrors.city && (
+                      <p className="text-red-500 text-sm mt-1">{validationErrors.city}</p>
+                    )}
                   </div>
                   
                   <div>
@@ -255,8 +401,14 @@ const Checkout: React.FC = () => {
                       value={formState.zip}
                       onChange={handleChange}
                       required
-                      className="w-full border dark:border-dark-border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background"
+                      placeholder="např. 123 45"
+                      className={`w-full border rounded-lg p-2.5 focus:ring-dark-primary focus:border-dark-primary bg-dark-background text-dark-on-background ${
+                        validationErrors.zip ? 'border-red-500 dark:border-red-500' : 'dark:border-dark-border'
+                      }`}
                     />
+                    {validationErrors.zip && (
+                      <p className="text-red-500 text-sm mt-1">{validationErrors.zip}</p>
+                    )}
                   </div>
                   <div>
                     <label htmlFor="country" className="block text-sm font-medium text-dark-text-light mb-1">
@@ -304,9 +456,9 @@ const Checkout: React.FC = () => {
 
             <Button
               type="submit"
-              disabled={isSubmitting || cartItems.length === 0}
+              disabled={isSubmitting || cartItems.length === 0 || Object.values(validationErrors).some(error => error !== null)}
               className={`w-full py-3 px-6 rounded-lg font-semibold flex items-center justify-center transition-colors duration-300 ${
-                (isSubmitting || cartItems.length === 0)
+                (isSubmitting || cartItems.length === 0 || Object.values(validationErrors).some(error => error !== null))
                   ? 'bg-gray-700 cursor-not-allowed text-dark-text-dark'
                   : 'bg-dark-primary hover:bg-dark-primary-dark text-dark-on-primary'
               }`}
